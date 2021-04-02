@@ -1,0 +1,14 @@
+.default: all
+
+all: Examples
+
+clean: rm -f Examples *.o
+
+Examples: main.o Example.o
+
+	g++ -Wall -Werror -std=c++14 -O -o $@ $^
+
+%.o: %.cpp
+	g++ -Wall -Werror -std=c++14 -O -c $^
+
+

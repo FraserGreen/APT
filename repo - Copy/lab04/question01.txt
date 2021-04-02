@@ -1,0 +1,5 @@
+a) stops the linker? from reading the same declarations twice, if they are shared among different classses
+b) otherwise they would be passed by value, which creates an infinite loop of copying.
+c) both, as there are no pointers stored. if there were, it would be a shallow copy.
+d) no, because the real life counterpart always already has the values upon drawing the card.
+e) no, because the card is a model and should only ever deal with things that directly influence the card. printing etc. should be done elsewhere

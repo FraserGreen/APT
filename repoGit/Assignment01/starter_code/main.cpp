@@ -21,16 +21,22 @@ void readEnvStdin(Env env);
 // To be implemented for Milestone 3
 void printEnvStdout(Env env, NodeList *solution);
 
+//get length of char array
+void size(char *str);
+
+//print env to terminal
+void printEnv(Env env);
+
 int main(int argc, char **argv)
 {
     //TODO cleanse cmd line input
+
     cout << "" << endl;
-    cout << argv[1] << endl;
-    // tests();
+
     // Load Environment
-    Env env {};
-    env[0][0] = *argv[1];
+    Env env{};
     readEnvStdin(env);
+    printEnv(env);
 
     // Solve using forwardSearch
     // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 2
@@ -51,14 +57,50 @@ int main(int argc, char **argv)
     delete solution;
 }
 
+void printEnv(Env env)
+{
+    for (int i = 0; i < ENV_DIM; i++)
+    {
+        for (int j = 0; j < ENV_DIM; j++)
+        {
+            cout << env[i][j];
+        }
+        cout << endl;
+    }
+}
+
+void size(char *str)
+{
+    int length = 0;
+    for (int i = 0; i != '\n'; i++)
+    {
+        length++;
+    }
+}
+
 void tests()
 {
 }
 
 void readEnvStdin(Env env)
 {
-    cout << env[0][0] << endl;
     //TODO
+    //allow input to be from keyboard AND file.
+    //reading from file
+    //TODO remove hardcoded input source
+    std::fstream input;
+    input.open("sampleTest/1leftToRight.env");
+    
+    // cout << static_cast<char>(input.get()) << endl;
+
+    for (int i = 0; i<ENV_DIM ; i++) // && static_cast<char>(input.peek()) != '\0'
+    {
+        for (int j = 0; j<=ENV_DIM ; j++) // && static_cast<char>(input.peek()) != '\n'
+        {
+            env[i][j] = static_cast<char>(input.get());
+        }
+    }
+    input.close();
 }
 
 void printEnvStdout(Env env, NodeList *solution)

@@ -10,13 +10,6 @@ PathSolver::PathSolver()
     // TODO
     // nodesExplored->addElement(START_ELEMENT)
     nodesExplored = new NodeList();
-    nodesExplored->addElement(new Node(1, 2, 3));
-    cout << "Row of 1st node in pathSolver: ";
-    cout << nodesExplored->getNode(0)->getRow() << endl;
-    cout << "address of 1st node in pathSolver: ";
-    cout << nodesExplored->getNode(0) << endl;
-    cout << "address of NodeListin pathSolver: ";
-    cout << nodesExplored << endl;
 }
 
 PathSolver::~PathSolver()

@@ -9,7 +9,7 @@ Card::Card(Colour colour, int number)
 
 Card::Card(Card& other){
 
-   // //shallo copy
+   // //shallow copy
    // this->colour = other.colour;
    // this->number = other.number;
 

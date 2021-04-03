@@ -90,12 +90,12 @@ void readEnvStdin(Env env)
     //TODO remove hardcoded input source
     std::fstream input;
     input.open("sampleTest/1leftToRight.env");
-    
+
     // cout << static_cast<char>(input.get()) << endl;
 
-    for (int i = 0; i<ENV_DIM ; i++) // && static_cast<char>(input.peek()) != '\0'
+    for (int i = 0; i < ENV_DIM; i++) // && static_cast<char>(input.peek()) != '\0'
     {
-        for (int j = 0; j<=ENV_DIM ; j++) // && static_cast<char>(input.peek()) != '\n'
+        for (int j = 0; j <= ENV_DIM; j++) // && static_cast<char>(input.peek()) != '\n'
         {
             env[i][j] = static_cast<char>(input.get());
         }

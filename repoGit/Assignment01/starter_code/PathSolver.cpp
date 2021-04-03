@@ -1,24 +1,31 @@
 #include "PathSolver.h"
 #include <iostream>
 
-PathSolver::PathSolver(){
+PathSolver::PathSolver()
+{
     // TODO
 }
 
-PathSolver::~PathSolver(){
+PathSolver::~PathSolver()
+{
     // TODO
 }
 
-void PathSolver::forwardSearch(Env env){
-    // TODO 
+void PathSolver::forwardSearch(Env env)
+{
+    // TODO
 }
 
-NodeList* PathSolver::getNodesExplored(){
+NodeList *PathSolver::getNodesExplored()
+{
     //TODO
+    return nullptr;
 }
 
-NodeList* PathSolver::getPath(Env env){
+NodeList *PathSolver::getPath(Env env)
+{
     // TODO
+    return nullptr;
 }
 
 //-----------------------------

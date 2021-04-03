@@ -1,26 +1,34 @@
 #include "NodeList.h"
 #include <iostream>
 
-NodeList::NodeList(){
+NodeList::NodeList()
+{
     // TODO
 }
 
-NodeList::~NodeList(){
+NodeList::~NodeList()
+{
     // TODO
 }
 
-NodeList::NodeList(NodeList& other){
+NodeList::NodeList(NodeList &other)
+{
     // TODO
 }
 
-int NodeList::getLength(){
+int NodeList::getLength()
+{
+    // TODO
+    return -1;
+}
+
+void NodeList::addElement(Node *newPos)
+{
     // TODO
 }
 
-void NodeList::addElement(Node* newPos){
+Node *NodeList::getNode(int i)
+{
     // TODO
-}
-
-Node* NodeList::getNode(int i){
-    // TODO
+    return nullptr;
 }

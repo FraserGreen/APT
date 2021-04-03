@@ -14,29 +14,29 @@ Node::~Node()
 }
 
 int Node::getRow()
-{
+{ //completed
     return row;
 }
 
 int Node::getCol()
-{
+{ //completed
     return col;
 }
 
 int Node::getDistanceTraveled()
-{
+{ //completed
     return dist_traveled;
 }
 
 void Node::setDistanceTraveled(int dist_traveled)
-{
+{ //completed
     this->dist_traveled = dist_traveled;
 }
 
 int Node::getEstimatedDist2Goal(Node *goal)
-{
+{ //completed
     // returns manhattan distance between current node and goal node
-    return (abs(col - goal->col) + abs(row - goal->row));
+    return dist_traveled+(abs(col - goal->col) + abs(row - goal->row));
 }
 
 //--------------------------------

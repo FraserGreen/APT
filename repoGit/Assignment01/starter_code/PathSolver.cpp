@@ -18,7 +18,6 @@ void PathSolver::forwardSearch(Env env)
 
 NodeList *PathSolver::getNodesExplored()
 {
-    //TODO
     return nullptr;
 }
 

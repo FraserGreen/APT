@@ -15,7 +15,7 @@ NodeList::~NodeList()
 }
 
 NodeList::NodeList(NodeList &other)
-{
+{ //Completed
     this->length = other.length;
 
     for (int i=0;i<length;i++){
@@ -26,7 +26,7 @@ NodeList::NodeList(NodeList &other)
 }
 
 int NodeList::getLength()
-{
+{ //Completed
     return length;
 }
 
@@ -41,6 +41,6 @@ void NodeList::addElement(Node *newPos)
 }
 
 Node *NodeList::getNode(int i)
-{
+{ //completed
     return nodes[i];
 }

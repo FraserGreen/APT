@@ -42,5 +42,9 @@ void NodeList::addElement(Node *newPos)
 
 Node *NodeList::getNode(int i)
 { //completed
-    return nodes[i];
+    Node * node = nullptr;
+    if (nodes != nullptr && nodes[i] != nullptr){
+        node = nodes[i];
+    }
+    return node;
 }

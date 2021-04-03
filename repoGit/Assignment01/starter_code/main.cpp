@@ -23,10 +23,13 @@ void printEnvStdout(Env env, NodeList *solution);
 
 int main(int argc, char **argv)
 {
-
+    //TODO cleanse cmd line input
+    cout << "" << endl;
+    cout << argv[1] << endl;
     // tests();
     // Load Environment
-    Env env;
+    Env env {};
+    env[0][0] = *argv[1];
     readEnvStdin(env);
 
     // Solve using forwardSearch
@@ -48,11 +51,13 @@ int main(int argc, char **argv)
     delete solution;
 }
 
-void tests(){
+void tests()
+{
 }
 
 void readEnvStdin(Env env)
 {
+    cout << env[0][0] << endl;
     //TODO
 }
 

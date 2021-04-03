@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}/project",
-            "args": [],
+            "args": ["/sampleTest/1leftToRight.env"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

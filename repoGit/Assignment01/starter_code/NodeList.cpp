@@ -32,7 +32,7 @@ int NodeList::getLength()
 
 void NodeList::addElement(Node *newPos)
 {
-    // TODO
+    // completed
     if (length < NODE_LIST_ARRAY_MAX_SIZE)
     {
         nodes[length] = newPos;

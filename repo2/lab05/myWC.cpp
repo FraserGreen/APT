@@ -7,68 +7,118 @@ using std::endl;
 using std::string;
 
 #define MAX_CHARS_PER_LINE 1000
+void performOperation(char *operation, std::ifstream &input);
+int countCharacters(std::ifstream &input);
+int countWords(std::ifstream &input);
+int countLines(std::ifstream &input);
+void printLineByLine(std::ifstream &input);
+void printUsage();
 
-void printLineByLine(string filename);
-int countLines(string filename);
-int countCharacters(string filename);
-
-int main(string args[])
+int main(int argc, char *argv[])
 {
-    if (args->size()!= 2){
-        cout << "Usage: ./myWC <type> <filename>" << endl;
+    if (argc != 3)
+    { //two args + program name
+        cout << "Too " << (argc < 3 ? "few" : "many") << "arguments" << endl;
+        printUsage();
     }
-    //args[0] -l for number of lines, -c for number of characters
 
+    // access .txt file
+    std::ifstream input;
 
+    input.open(argv[2]);
+    if (input.is_open())
+    {
+        performOperation(argv[1], input);
+    }
+    else
+    {
+        cout << "Error reading file." << endl;
+        printUsage();
+    }
 
-    //args[1] text file to be read
-
-    string filename = "myCountry.txt";
-    // printLineByLine(filename);
-    cout << "Lines: " << countLines(filename) << endl;
-    cout << "Characters: " << countCharacters(filename) << endl;
+    // printLineByLine(argv[2]);
 }
 
-int countCharacters(string filename)
+void performOperation(char *operation, std::ifstream &input)
 {
-    std::ifstream poem;
-    poem.open(filename);
+    if (operation == string("-c"))
+    {
+        cout << "Characters: " << countCharacters(input) << endl;
+    }
+    else if (operation == string("-l"))
+    {
+        cout << "Lines: " << countLines(input) << endl;
+    }
+    else if (operation == string("-w"))
+    {
+        cout << "Words: " << countWords(input) << endl;
+    }
+    else
+    {
+        cout << "Invalid type." << endl;
+        printUsage();
+    }
+}
+
+int countCharacters(std::ifstream &input)
+{
 
     int numCharacters = 0;
-    while (poem.get() != -1)
+    while (input.get() != -1)
     {
         numCharacters++;
     }
     return numCharacters;
 }
-int countLines(string filename)
-{
-    std::ifstream poem;
-    poem.open(filename);
 
-    int numLines = 0;
-    while (!poem.eof())
+int countWords(std::ifstream &input)
+{
+    int numWords = 0;
+    string wordBin; //each word gets put in the bin. variable needed or 'input >>' would not work
+    while (input >> wordBin)
     {
-        if (static_cast<char>(poem.get()) == '\n')
+        numWords++;
+    }
+    return numWords;
+}
+
+
+int countLines(std::ifstream &input)
+{
+    int numLines = 0;
+    while (!input.eof())
+    {
+        if (static_cast<char>(input.get()) == '\n')
             numLines++;
     }
     return numLines;
 }
 
-void printLineByLine(string filename)
+void printLineByLine(std::ifstream &input)
 {
-    // access .txt file
-    std::ifstream poem;
-    poem.open(filename);
-
     // read file line by line, printing each one
-    while (!poem.eof())
+    while (!input.eof())
     {
         char line[MAX_CHARS_PER_LINE];
-        poem.getline(line, MAX_CHARS_PER_LINE, '\n');
+        input.getline(line, MAX_CHARS_PER_LINE, '\n');
         cout << line << endl;
     }
 
     // close the file
-    poem.close();
+    input.close();
+}
+
+void printUsage()
+{
+    cout << "Usage: ./myWC <type> <filename>" << endl;
+    cout << "<type>:" << endl;
+    cout << "-c for number of characters" << endl;
+    cout << "-w for number of words" << endl;
+    cout << "-l for number of lines\n"
+         << endl;
+
+    cout << "<filename>:" << endl;
+    cout << "absolute path or path relative to the dir this program runs from." << endl;
+    cout << "e.g. /home/fraser/apt/repo2/lab05/snowyRiver.txt" << endl;
+    cout << "e.g. myCountry.txt" << endl;
 }

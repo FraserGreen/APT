@@ -34,25 +34,25 @@ void PathSolver::forwardSearch(Env env)
 
     //LOOP:
     Node *p = start;
-    // while (env[p->getCol()][p->getRow()] != 'G')
-    for (int loopnum = 0; loopnum < 10; loopnum++)
+    while (env[p->getCol()][p->getRow()] != 'G')
+    // for (int loopnum = 0; loopnum < 20; loopnum++)
     {
-        cout << "loop" << endl;
 
         // Let C be a list of positions the that has already being explored, with distances (initially empty). This is also called the closed-list.
         //*** this list is nodesExplored.
-        p = p;
         // repeat:
         // Select the node p from the open-list P that has the smallest estimated distance (see Section 3.2.2) to goal and, is not in the closed-list C.
         for (int i = 0; i < openList->getLength(); i++)
         {
-            if (p->getEstimatedDist2Goal(goal) > openList->getNode(i)->getEstimatedDist2Goal(goal) - openList->getNode(i)->getDistanceTraveled() && !nodesExplored->doesContain(openList->getNode(i)))
+            if ((p->getEstimatedDist2Goal(goal) - p->getDistanceTraveled() > openList->getNode(i)->getEstimatedDist2Goal(goal) - openList->getNode(i)->getDistanceTraveled()) && !nodesExplored->doesContain(openList->getNode(i)))
             {
+                cout << "old p: " << p->toString();
+                cout << ". Est. distance to goal: " << p->getEstimatedDist2Goal(goal) - p->getDistanceTraveled() << endl;
                 p = openList->getNode(i);
+                cout << "new p: " << p->toString();
+                cout << ". Est. distance to goal: " << p->getEstimatedDist2Goal(goal) - p->getDistanceTraveled() << endl;
             }
         }
-
-        visualiseEnv(env, openList, p);
 
         //TODO change this from a deep to a shallow copy. must resolve issue of deconstuctor of both lists trying to delete a node that has already been deleted by the other deconstructor.
         nodesExplored->addElement(new Node(p->getRow(), p->getCol(), p->getDistanceTraveled()));
@@ -64,10 +64,12 @@ void PathSolver::forwardSearch(Env env)
         addNearbytoP(env, openList, p);
         // end
 
-        cout << openList->toString() << endl;
+        // cout << openList->toString() << endl;
 
         // Add p to closed-list C.
         nodesExplored->addElement(new Node(p->getRow(), p->getCol(), p->getDistanceTraveled()));
+
+        visualiseEnv(env, openList, p);
     }
 
     // until The robot reaches the goal, that is, p == G, or no such position p can be found
@@ -80,7 +82,7 @@ Node *PathSolver::get(Env env, char charToFind)
     {
         for (int j = 0; j < ENV_DIM; j++)
         {
-            if (env[i][j] == charToFind)
+            if (env[j][i] == charToFind)
             {
                 node = new Node(i, j, 0);
             }
@@ -131,31 +133,31 @@ void PathSolver::addNearbytoP(Env env, NodeList *openList, Node *p)
     int col = p->getCol() - 1;
     int dist_traveled = p->getDistanceTraveled();
 
-    if (!openList->doesContain(new Node(col, row, dist_traveled)) && (env[col][row] == '.' || env[col][row] == 'G'))
+    if (!openList->doesContain(new Node(row, col, dist_traveled)) && (env[col][row] == '.' || env[col][row] == 'G'))
     {
-        openList->addElement(new Node(col, row, dist_traveled + 1));
+        openList->addElement(new Node(row, col, dist_traveled + 1));
     }
     //right
     row++;
     col++;
-    if (!openList->doesContain(new Node(col, row, dist_traveled)) && (env[col][row] == '.' || env[col][row] == 'G'))
+    if (!openList->doesContain(new Node(row, col, dist_traveled)) && (env[col][row] == '.' || env[col][row] == 'G'))
     {
-        openList->addElement(new Node(col, row, dist_traveled + 1));
+        openList->addElement(new Node(row, col, dist_traveled + 1));
     }
     //down
     row--;
     col++;
-    if (!openList->doesContain(new Node(col, row, dist_traveled)) && (env[col][row] == '.' || env[col][row] == 'G'))
+    if (!openList->doesContain(new Node(row, col, dist_traveled)) && (env[col][row] == '.' || env[col][row] == 'G'))
     {
-        openList->addElement(new Node(col, row, dist_traveled + 1));
+        openList->addElement(new Node(row, col, dist_traveled + 1));
     }
 
     //left
     row--;
     col--;
-    if (!openList->doesContain(new Node(col, row, dist_traveled)) && (env[col][row] == '.' || env[col][row] == 'G'))
+    if (!openList->doesContain(new Node(row, col, dist_traveled)) && (env[col][row] == '.' || env[col][row] == 'G'))
     {
-        openList->addElement(new Node(col, row, dist_traveled + 1));
+        openList->addElement(new Node(row, col, dist_traveled + 1));
     }
 }
 
@@ -164,22 +166,29 @@ void PathSolver::visualiseEnv(Env env, NodeList *P, Node *p)
     //change all P to ?'s
     for (int i = 0; i < P->getLength(); i++)
     {
-        env[P->getNode(i)->getCol()][P->getNode(i)->getRow()] = '?';
+        if (env[P->getNode(i)->getCol()][P->getNode(i)->getRow()] != 'G')
+        {
+            env[P->getNode(i)->getCol()][P->getNode(i)->getRow()] = '?';
+        }
     }
 
     //change all C to x's
     for (int i = 0; i < nodesExplored->getLength(); i++)
     {
-        env[nodesExplored->getNode(i)->getCol()][nodesExplored->getNode(i)->getRow()] = 'x';
+        if (env[nodesExplored->getNode(i)->getCol()][nodesExplored->getNode(i)->getRow()] != 'G')
+        {
+            env[nodesExplored->getNode(i)->getCol()][nodesExplored->getNode(i)->getRow()] = 'x';
+        }
     }
 
     //change p to #
-    env[p->getCol()][p->getRow()] = '#';
+    if(env[p->getCol()][p->getRow()] != 'G'){
+    env[p->getCol()][p->getRow()] = '#';}
 
     //print
     for (int i = 0; i < ENV_DIM; i++)
     {
-        for (int j = 0; j < ENV_DIM-1; j++)
+        for (int j = 0; j < ENV_DIM; j++)
         {
             cout << env[i][j];
         }

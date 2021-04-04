@@ -28,39 +28,31 @@ void PathSolver::forwardSearch(Env env)
     // Input: G- goal location for the robot to get reach
     Node *goal = get(env, 'G'); //TODO may need to change dist_travelled in this node
     // Let P be a list of positions the robot can reach, with distances (initially contains S). This is also called the open-list.
-    //*getAll(env, '.')
 
     NodeList *openList = new NodeList();
     openList->addElement(start);
 
     //LOOP:
-    Node *p = nullptr;
-    // while (p == nullptr || env[p->getCol()][p->getRow()] != 'G')
-    for (int loopnum = 0; loopnum < 5; loopnum++)
+    Node *p = start;
+    // while (env[p->getCol()][p->getRow()] != 'G')
+    for (int loopnum = 0; loopnum < 10; loopnum++)
     {
         cout << "loop" << endl;
 
         // Let C be a list of positions the that has already being explored, with distances (initially empty). This is also called the closed-list.
         //*** this list is nodesExplored.
-
+        p = p;
         // repeat:
         // Select the node p from the open-list P that has the smallest estimated distance (see Section 3.2.2) to goal and, is not in the closed-list C.
         for (int i = 0; i < openList->getLength(); i++)
         {
-            if (p == nullptr)
-            {
-                p = openList->getNode(i);
-            }
-
-            // cout << "***" << endl;
-            // cout << p->toString() << endl;
-            // cout << (p->getEstimatedDist2Goal(goal) > openList->getNode(i)->getEstimatedDist2Goal(goal)) << endl;
-            // cout << "***" << endl;
-            if (p->getEstimatedDist2Goal(goal) > openList->getNode(i)->getEstimatedDist2Goal(goal)-openList->getNode(i)->getDistanceTraveled() && !nodesExplored->doesContain(openList->getNode(i)))
+            if (p->getEstimatedDist2Goal(goal) > openList->getNode(i)->getEstimatedDist2Goal(goal) - openList->getNode(i)->getDistanceTraveled() && !nodesExplored->doesContain(openList->getNode(i)))
             {
                 p = openList->getNode(i);
             }
         }
+
+        visualiseEnv(env, openList, p);
 
         //TODO change this from a deep to a shallow copy. must resolve issue of deconstuctor of both lists trying to delete a node that has already been deleted by the other deconstructor.
         nodesExplored->addElement(new Node(p->getRow(), p->getCol(), p->getDistanceTraveled()));
@@ -84,9 +76,9 @@ void PathSolver::forwardSearch(Env env)
 Node *PathSolver::get(Env env, char charToFind)
 {
     Node *node = nullptr;
-    for (int i = 1; i < ENV_DIM; i++)
+    for (int i = 0; i < ENV_DIM; i++)
     {
-        for (int j = 1; j < ENV_DIM; j++)
+        for (int j = 0; j < ENV_DIM; j++)
         {
             if (env[i][j] == charToFind)
             {
@@ -164,5 +156,33 @@ void PathSolver::addNearbytoP(Env env, NodeList *openList, Node *p)
     if (!openList->doesContain(new Node(col, row, dist_traveled)) && (env[col][row] == '.' || env[col][row] == 'G'))
     {
         openList->addElement(new Node(col, row, dist_traveled + 1));
+    }
+}
+
+void PathSolver::visualiseEnv(Env env, NodeList *P, Node *p)
+{
+    //change all P to ?'s
+    for (int i = 0; i < P->getLength(); i++)
+    {
+        env[P->getNode(i)->getCol()][P->getNode(i)->getRow()] = '?';
+    }
+
+    //change all C to x's
+    for (int i = 0; i < nodesExplored->getLength(); i++)
+    {
+        env[nodesExplored->getNode(i)->getCol()][nodesExplored->getNode(i)->getRow()] = 'x';
+    }
+
+    //change p to #
+    env[p->getCol()][p->getRow()] = '#';
+
+    //print
+    for (int i = 0; i < ENV_DIM; i++)
+    {
+        for (int j = 0; j < ENV_DIM-1; j++)
+        {
+            cout << env[i][j];
+        }
+        cout << endl;
     }
 }

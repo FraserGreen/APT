@@ -31,6 +31,8 @@ public:
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*                                           */
     bool doesContain(Node *node);
+    std::string toString();
+
 
 
 private:

@@ -1,6 +1,8 @@
 #include "NodeList.h"
 #include <iostream>
 
+
+
 NodeList::NodeList()
 {
     length = 0;
@@ -63,4 +65,14 @@ bool NodeList::doesContain(Node *node)
             }
     }
     return isInList;
+}
+
+std::string NodeList::toString(){
+    std::string str = "";
+    for (int i = 0; i < length; i++)
+    {
+        str.append(nodes[i]->toString());
+        str.append("\n");
+    }
+    return str;
 }

@@ -37,6 +37,7 @@ public:
     /*                                           */
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*                                           */
+    void addNearbytoP(Env env, NodeList *P, Node *closestNode);
 
 private:
     /*                                           */
@@ -49,7 +50,6 @@ private:
     /*                                           */
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*                                           */
-    
 };
 
 

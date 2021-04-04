@@ -37,6 +37,7 @@ public:
     //used in debugging to give info about a specific node.
     std::string toString();
 
+
 private:
     /*                                           */
     /* DO NOT MOFIFY THESE VARIABLES             */

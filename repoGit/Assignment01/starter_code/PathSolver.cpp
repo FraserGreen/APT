@@ -35,40 +35,48 @@ void PathSolver::forwardSearch(Env env)
 
     //LOOP:
     Node *p = nullptr;
-    while (p == nullptr || env[p->getCol()][p->getRow()]!='G')
-
-    // Let C be a list of positions the that has already being explored, with distances (initially empty). This is also called the closed-list.
-    //*** this list is nodesExplored.
-
-    // repeat:
-    // Select the node p from the open-list P that has the smallest estimated distance (see Section 3.2.2) to goal and, is not in the closed-list C.
-    for (int i = 0; i < openList->getLength() && !nodesExplored->doesContain(openList->getNode(i)); i++)
+    // while (p == nullptr || env[p->getCol()][p->getRow()] != 'G')
+    for (int loopnum = 0; loopnum < 5; loopnum++)
     {
-        if (p == nullptr)
-        {
-            p = openList->getNode(i);
-        }
-        if (p->getEstimatedDist2Goal(goal) > openList->getNode(i)->getEstimatedDist2Goal(goal))
-        {
+        cout << "loop" << endl;
 
-            p = openList->getNode(i);
+        // Let C be a list of positions the that has already being explored, with distances (initially empty). This is also called the closed-list.
+        //*** this list is nodesExplored.
+
+        // repeat:
+        // Select the node p from the open-list P that has the smallest estimated distance (see Section 3.2.2) to goal and, is not in the closed-list C.
+        for (int i = 0; i < openList->getLength(); i++)
+        {
+            if (p == nullptr)
+            {
+                p = openList->getNode(i);
+            }
+
+            // cout << "***" << endl;
+            // cout << p->toString() << endl;
+            // cout << (p->getEstimatedDist2Goal(goal) > openList->getNode(i)->getEstimatedDist2Goal(goal)) << endl;
+            // cout << "***" << endl;
+            if (p->getEstimatedDist2Goal(goal) > openList->getNode(i)->getEstimatedDist2Goal(goal)-openList->getNode(i)->getDistanceTraveled() && !nodesExplored->doesContain(openList->getNode(i)))
+            {
+                p = openList->getNode(i);
+            }
         }
+
+        //TODO change this from a deep to a shallow copy. must resolve issue of deconstuctor of both lists trying to delete a node that has already been deleted by the other deconstructor.
+        nodesExplored->addElement(new Node(p->getRow(), p->getCol(), p->getDistanceTraveled()));
+
+        // for Each position q in Env that the robot can reach from p do
+        // Set the distance_travelled of q to be one more that that of p
+        // Add q to open-list P only if it is not already in it.
+
+        addNearbytoP(env, openList, p);
+        // end
+
+        cout << openList->toString() << endl;
+
+        // Add p to closed-list C.
+        nodesExplored->addElement(new Node(p->getRow(), p->getCol(), p->getDistanceTraveled()));
     }
-
-    //TODO change this from a deep to a shallow copy. must resolve issue of deconstuctor of both lists trying to delete a node that has already been deleted by the other deconstructor.
-    nodesExplored->addElement(new Node(p->getRow(), p->getCol(), p->getDistanceTraveled()));
-
-    // for Each position q in Env that the robot can reach from p do
-    // Set the distance_travelled of q to be one more that that of p
-    // Add q to open-list P only if it is not already in it.
-
-    addNearbytoP(env, openList, p);
-    // end
-
-    // cout << openList->toString() << endl;
-
-    // Add p to closed-list C.
-    nodesExplored->addElement(new Node(p->getRow(), p->getCol(), p->getDistanceTraveled()));
 
     // until The robot reaches the goal, that is, p == G, or no such position p can be found
 }
@@ -131,22 +139,21 @@ void PathSolver::addNearbytoP(Env env, NodeList *openList, Node *p)
     int col = p->getCol() - 1;
     int dist_traveled = p->getDistanceTraveled();
 
-    if (env[col][row] == '.' || env[col][row] == 'G')
+    if (!openList->doesContain(new Node(col, row, dist_traveled)) && (env[col][row] == '.' || env[col][row] == 'G'))
     {
         openList->addElement(new Node(col, row, dist_traveled + 1));
     }
     //right
     row++;
     col++;
-    if (env[col][row] == '.' || env[col][row] == 'G')
+    if (!openList->doesContain(new Node(col, row, dist_traveled)) && (env[col][row] == '.' || env[col][row] == 'G'))
     {
         openList->addElement(new Node(col, row, dist_traveled + 1));
     }
-
     //down
     row--;
     col++;
-    if (env[col][row] == '.' || env[col][row] == 'G')
+    if (!openList->doesContain(new Node(col, row, dist_traveled)) && (env[col][row] == '.' || env[col][row] == 'G'))
     {
         openList->addElement(new Node(col, row, dist_traveled + 1));
     }
@@ -154,7 +161,7 @@ void PathSolver::addNearbytoP(Env env, NodeList *openList, Node *p)
     //left
     row--;
     col--;
-    if (env[col][row] == '.' || env[col][row] == 'G')
+    if (!openList->doesContain(new Node(col, row, dist_traveled)) && (env[col][row] == '.' || env[col][row] == 'G'))
     {
         openList->addElement(new Node(col, row, dist_traveled + 1));
     }

@@ -2,6 +2,8 @@
 #define COSC_ASSIGN_ONE_NODE
 
 #include "Types.h"
+//TODO delete include string
+#include <string>
 
 class Node
 {

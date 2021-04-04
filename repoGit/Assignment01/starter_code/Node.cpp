@@ -44,6 +44,11 @@ int Node::getEstimatedDist2Goal(Node *goal)
 std::string Node::toString()
 {
     std::string str;
-    str.append("Row: "+row);
-    // str.append(row);
+    str.append("Row: ");
+    str.append(std::to_string(row));
+    str.append(", Column: ");
+    str.append(std::to_string(col));
+    str.append(", Distance Travelled: ");
+    str.append(std::to_string(dist_traveled));
+    return str;
 }

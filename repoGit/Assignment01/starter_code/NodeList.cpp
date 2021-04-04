@@ -18,10 +18,11 @@ NodeList::NodeList(NodeList &other)
 { //Completed
     this->length = other.length;
 
-    for (int i=0;i<length;i++){
+    for (int i = 0; i < length; i++)
+    {
         Node *old = other.nodes[i];
 
-        nodes[i] = new Node(old->getRow(),old->getCol(),old->getDistanceTraveled());
+        nodes[i] = new Node(old->getRow(), old->getCol(), old->getDistanceTraveled());
     }
 }
 
@@ -42,9 +43,24 @@ void NodeList::addElement(Node *newPos)
 
 Node *NodeList::getNode(int i)
 { //completed
-    Node * node = nullptr;
-    if (nodes != nullptr && nodes[i] != nullptr){
+    Node *node = nullptr;
+    if (nodes != nullptr && nodes[i] != nullptr)
+    {
         node = nodes[i];
     }
     return node;
+}
+
+//returns true if row and column are the same.
+bool NodeList::doesContain(Node *node)
+{
+    bool isInList = false;
+    for (int i = 0; i < length; i++)
+    {
+        if (node->getRow() == nodes[i]->getRow() &&
+            node->getCol() == nodes[i]->getCol()) {
+                isInList = true;
+            }
+    }
+    return isInList;
 }

@@ -34,19 +34,6 @@ void PathSolver::forwardSearch(Env env)
     openList->addElement(start);
 
     //LOOP:
-    Node *closestNode = nullptr;
-    for (int i = 0; i < openList->getLength(); i++)
-    {
-        if (closestNode == nullptr)
-        {
-            closestNode = openList->getNode(i);
-        }
-        if (closestNode->getEstimatedDist2Goal(goal) > openList->getNode(i)->getEstimatedDist2Goal(goal)){
-            closestNode = openList->getNode(i);
-        }
-    }
-
-    cout << closestNode->toString() << endl;
     // cout << start->getEstimatedDist2Goal(goal) << endl;
 
     // cout << openList->getLength() << endl;
@@ -56,6 +43,23 @@ void PathSolver::forwardSearch(Env env)
 
     // repeat:
     // Select the node p from the open-list P that has the smallest estimated distance (see Section 3.2.2) to goal and, is not in the closed-list C.
+        Node *closestNode = nullptr;
+        for (int i = 0; i < openList->getLength() && !nodesExplored->doesContain(openList->getNode(i)); i++)
+        {
+            if (closestNode == nullptr)
+            {
+                closestNode = openList->getNode(i);
+            }
+            if (closestNode->getEstimatedDist2Goal(goal) > openList->getNode(i)->getEstimatedDist2Goal(goal))
+            {
+
+                closestNode = openList->getNode(i);
+            }
+        }
+
+        cout << closestNode->toString() << endl;
+        nodesExplored->addElement(new Node(closestNode->getRow(), closestNode->getCol(), closestNode->getDistanceTraveled()));
+        
     // for Each position q in Env that the robot can reach from p do
     // Set the distance_travelled of q to be one more that that of p
     // Add q to open-list P only if it is not already in it.

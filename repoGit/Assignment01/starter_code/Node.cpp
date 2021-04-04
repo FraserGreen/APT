@@ -36,7 +36,14 @@ void Node::setDistanceTraveled(int dist_traveled)
 int Node::getEstimatedDist2Goal(Node *goal)
 { //completed
     // returns manhattan distance between current node and goal node
-    return dist_traveled+(abs(col - goal->col) + abs(row - goal->row));
+    return dist_traveled + (abs(col - goal->col) + abs(row - goal->row));
 }
 
 //--------------------------------
+
+std::string Node::toString()
+{
+    std::string str;
+    str.append("Row: "+row);
+    // str.append(row);
+}

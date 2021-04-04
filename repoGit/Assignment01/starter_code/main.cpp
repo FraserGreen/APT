@@ -41,9 +41,6 @@ int main(int argc, char **argv)
     // Solve using forwardSearch
     // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 2
     PathSolver *pathSolver = new PathSolver();
-    Node *end = pathSolver->get(env, 'G');
-    // cout << "Start Row: " << end->getRow() << ". Start Column: "<< end->getCol()<< endl;
-
     pathSolver->forwardSearch(env);
 
     NodeList *exploredPositions = nullptr;
@@ -88,7 +85,6 @@ void tests()
 void readEnvStdin(Env env)
 {
     //TODO
-    //allow input to be from keyboard AND file.
     //reading from file
     //TODO remove hardcoded input source
     std::fstream input;

@@ -41,6 +41,9 @@ int main(int argc, char **argv)
     // Solve using forwardSearch
     // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 2
     PathSolver *pathSolver = new PathSolver();
+    Node *end = pathSolver->get(env, 'G');
+    // cout << "Start Row: " << end->getRow() << ". Start Column: "<< end->getCol()<< endl;
+
     pathSolver->forwardSearch(env);
 
     NodeList *exploredPositions = nullptr;

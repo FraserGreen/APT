@@ -19,6 +19,9 @@ public:
     // To be implemented for Milestone 2
     void forwardSearch(Env env);
 
+    //returns the node of final ocurrance 
+    Node* get(Env env, char charToFind);
+
     // Get a DEEP COPY of the explored NodeList in forward search
     // To be implemented for Milestone 2
     NodeList* getNodesExplored();

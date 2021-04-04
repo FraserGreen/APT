@@ -42,6 +42,8 @@ public:
 
     void visualiseEnv(Env env, NodeList *P ,Node *p);
 
+    bool equals(NodeList *list1, NodeList *list2);
+
 private:
     /*                                           */
     /* DO NOT MOFIFY THESE VARIABLES             */

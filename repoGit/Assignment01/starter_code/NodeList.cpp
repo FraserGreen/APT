@@ -1,8 +1,6 @@
 #include "NodeList.h"
 #include <iostream>
 
-
-
 NodeList::NodeList()
 {
     length = 0;
@@ -18,14 +16,14 @@ NodeList::~NodeList()
 
 NodeList::NodeList(NodeList &other)
 { //Completed
-    this->length = other.length;
+        this->length = other.length;
 
-    for (int i = 0; i < length; i++)
-    {
-        Node *old = other.nodes[i];
+        for (int i = 0; i < length; i++)
+        {
+            Node *old = other.nodes[i];
 
-        nodes[i] = new Node(old->getRow(), old->getCol(), old->getDistanceTraveled());
-    }
+            nodes[i] = new Node(old->getRow(), old->getCol(), old->getDistanceTraveled());
+        }
 }
 
 int NodeList::getLength()
@@ -60,14 +58,16 @@ bool NodeList::doesContain(Node *node)
     for (int i = 0; i < length; i++)
     {
         if (node->getRow() == nodes[i]->getRow() &&
-            node->getCol() == nodes[i]->getCol()) {
-                isInList = true;
-            }
+            node->getCol() == nodes[i]->getCol())
+        {
+            isInList = true;
+        }
     }
     return isInList;
 }
 
-std::string NodeList::toString(){
+std::string NodeList::toString()
+{
     std::string str = "";
     for (int i = 0; i < length; i++)
     {

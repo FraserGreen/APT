@@ -45,6 +45,7 @@ int main(int argc, char **argv)
 
     NodeList *exploredPositions = nullptr;
     exploredPositions = pathSolver->getNodesExplored();
+    cout << exploredPositions->toString() << endl;
 
     // Get the path
     // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 3
@@ -88,7 +89,7 @@ void readEnvStdin(Env env)
     //reading from file
     //TODO remove hardcoded input source
     std::fstream input;
-    input.open("sampleTest/1leftToRight.env");
+    input.open("sampleTest/sample10.env");
 
     // cout << static_cast<char>(input.get()) << endl;
 

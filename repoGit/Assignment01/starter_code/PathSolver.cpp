@@ -36,7 +36,7 @@ void PathSolver::forwardSearch(Env env)
     //LOOP:
     int i = 1; //remove after testing
     while (env[p->getCol()][p->getRow()] != 'G' &&
-           !equals(openList, nodesExplored) && i < 40)
+           !equals(openList, nodesExplored))
     // for (int loopnum = 0; loopnum < 20; loopnum++)
     {
         i++; //remove after testing
@@ -45,31 +45,35 @@ void PathSolver::forwardSearch(Env env)
         //*** this list is nodesExplored.
         // repeat:
         // Select the node p from the open-list P that has the smallest estimated distance (see Section 3.2.2) to goal and, is not in the closed-list C.
+
+        //sets p to the node closest to the end of openList that is not in closedList. Used mainly to get rid of the old p.
+        for (int j = 0; j < openList->getLength() && nodesExplored->doesContain(p); j++)
+        {
+            p = openList->getNode(j);
+        } 
+
+        //sets p to the node in openList which is closest to the goal, and not in closedList.
         for (int i = 0; i < openList->getLength(); i++)
         {
             Node *candidateNode = openList->getNode(i);
-            if (i == 0 && !nodesExplored->doesContain(openList->getNode(i)))
-            {
-                p = candidateNode;
-            }
+
             if ((p->getEstimatedDist2Goal(goal) - p->getDistanceTraveled() >= (candidateNode->getEstimatedDist2Goal(goal) - candidateNode->getDistanceTraveled())) &&
                 !nodesExplored->doesContain(candidateNode))
             {
-                cout << "old p: " << p->toString();
-                cout << ". Est. distance to goal: " << p->getEstimatedDist2Goal(goal) - p->getDistanceTraveled() << endl;
+                // cout << "old p: " << p->toString();
+                // cout << ". Est. distance to goal: " << p->getEstimatedDist2Goal(goal) - p->getDistanceTraveled() << endl;
                 p = candidateNode;
-                cout << "new p: " << p->toString();
-                cout << ". Est. distance to goal: " << p->getEstimatedDist2Goal(goal) - p->getDistanceTraveled() << endl;
+                // cout << "new p: " << p->toString();
+                // cout << ". Est. distance to goal: " << p->getEstimatedDist2Goal(goal) - p->getDistanceTraveled() << endl;
             }
-            if (i + 1 == openList->getLength())
-            {
-                for (int j = 0; j < openList->getLength() && nodesExplored->doesContain(p); j++)
-                {
-                    p = openList->getNode(j);
-                }
-            }
+            // if (i + 1 == openList->getLength())
+            // {
+            //     for (int j = 0; j < openList->getLength() && nodesExplored->doesContain(p); j++)
+            //     {
+            //         p = openList->getNode(j);
+            //     }
+            // }
         }
-
 
         // for Each position q in Env that the robot can reach from p do
         // Set the distance_travelled of q to be one more that that of p
@@ -86,6 +90,7 @@ void PathSolver::forwardSearch(Env env)
         nodesExplored->addElement(new Node(p->getRow(), p->getCol(), p->getDistanceTraveled()));
 
         visualiseEnv(env, openList, p);
+        cout << endl;
 
         //TODO get acccurate distance travelled after jumping backwards
     }

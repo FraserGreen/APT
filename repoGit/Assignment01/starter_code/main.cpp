@@ -53,6 +53,7 @@ int main(int argc, char **argv)
 
     printEnvStdout(env, solution);
 
+
     delete pathSolver;
     delete exploredPositions;
     delete solution;
@@ -89,7 +90,7 @@ void readEnvStdin(Env env)
     //reading from file
     //TODO remove hardcoded input source
     std::fstream input;
-    input.open("sampleTest/sample10.env");
+    input.open("sampleTest/sample08.env");
 
     // cout << static_cast<char>(input.get()) << endl;
 

@@ -9,7 +9,7 @@ int main(void){
 
     2.a) istream: standard input stream
     2.b) ostream: standard output stream
-    2.c) istreamstream: standard input mempory stream
+    2.c) istreamstream: standard input memory stream
     2.d) ofstream: output file stream
 
     3) ??

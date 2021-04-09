@@ -78,8 +78,9 @@ void PathSolver::forwardSearch(Env env)
         // for Each position q in Env that the robot can reach from p do
         // Set the distance_travelled of q to be one more that that of p
         // Add q to open-list P only if it is not already in it.
-
-        addNearbytoP(env, openList, p);
+ 
+        //TODO remove openList from this method, do checks inside here
+         addNearbytoP(env, openList, p);
         // end
 
         // cout << openList->toString() << endl;
@@ -89,7 +90,7 @@ void PathSolver::forwardSearch(Env env)
         //TODO  maybe? change this from a deep to a shallow copy. must resolve issue of deconstuctor of both lists trying to delete a node that has already been deleted by the other deconstructor.
         nodesExplored->addElement(new Node(p->getRow(), p->getCol(), p->getDistanceTraveled()));
 
-        visualiseEnv(env, openList, p);
+        // visualiseEnv(env, openList, p);
         cout << endl;
 
         //TODO get acccurate distance travelled after jumping backwards

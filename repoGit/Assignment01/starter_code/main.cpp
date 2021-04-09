@@ -31,8 +31,6 @@ int main(int argc, char **argv)
 {
     //TODO cleanse cmd line input
 
-    cout << "" << endl;
-
     // Load Environment
     Env env{};
     readEnvStdin(env);
@@ -52,7 +50,6 @@ int main(int argc, char **argv)
     NodeList *solution = pathSolver->getPath(env);
 
     printEnvStdout(env, solution);
-
 
     delete pathSolver;
     delete exploredPositions;
@@ -86,22 +83,32 @@ void tests()
 
 void readEnvStdin(Env env)
 {
+    cout << "1" << endl;
+    std::string input;
+    while (!std::cin.eof())
+    {
+        std::cin >> input;
+        cout << input << endl;
+    }
+    // std::cin >> input;
+    cout << "2" << endl;
+
     //TODO
     //reading from file
     //TODO remove hardcoded input source
-    std::fstream input;
-    input.open("sampleTest/sample08.env");
+    // std::fstream input;
+    // input.open("sampleTest/sample09.env");
 
-    // cout << static_cast<char>(input.get()) << endl;
+    // // cout << static_cast<char>(input.get()) << endl;
 
-    for (int i = 0; i < ENV_DIM; i++) // && static_cast<char>(input.peek()) != '\0'
-    {
-        for (int j = 0; j <= ENV_DIM; j++) // && static_cast<char>(input.peek()) != '\n'
-        {
-            env[i][j] = static_cast<char>(input.get());
-        }
-    }
-    input.close();
+    // for (int i = 0; i < ENV_DIM; i++) // && static_cast<char>(input.peek()) != '\0'
+    // {
+    //     for (int j = 0; j <= ENV_DIM; j++) // && static_cast<char>(input.peek()) != '\n'
+    //     {
+    //         env[i][j] = static_cast<char>(input.get());
+    //     }
+    // }
+    // input.close();
 }
 
 void printEnvStdout(Env env, NodeList *solution)

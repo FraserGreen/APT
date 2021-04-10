@@ -1,7 +1,6 @@
 #include <iostream>
-#include <fstream>
-#include <stdexcept>
 #include <string>
+#include <fstream>
 
 #include "Types.h"
 #include "Node.h"
@@ -9,6 +8,7 @@
 #include "PathSolver.h"
 
 //TODO DELETE USINGS
+using std::cin;
 using std::cout;
 using std::endl;
 
@@ -34,26 +34,34 @@ int main(int argc, char **argv)
     // Load Environment
     Env env{};
     readEnvStdin(env);
-    printEnv(env);
+    if (env[ENV_DIM-1][ENV_DIM-1] == '=')
+    {
 
-    // Solve using forwardSearch
-    // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 2
-    PathSolver *pathSolver = new PathSolver();
-    pathSolver->forwardSearch(env);
+        // printEnv(env);
 
-    NodeList *exploredPositions = nullptr;
-    exploredPositions = pathSolver->getNodesExplored();
-    cout << exploredPositions->toString() << endl;
+        // Solve using forwardSearch
+        // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 2
+        PathSolver *pathSolver = new PathSolver();
+        pathSolver->forwardSearch(env);
 
-    // Get the path
-    // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 3
-    NodeList *solution = pathSolver->getPath(env);
+        NodeList *exploredPositions = nullptr;
+        exploredPositions = pathSolver->getNodesExplored();
+        cout << exploredPositions->toString() << endl;
 
-    printEnvStdout(env, solution);
+        // Get the path
+        // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 3
+        NodeList *solution = pathSolver->getPath(env);
 
-    delete pathSolver;
-    delete exploredPositions;
-    delete solution;
+        printEnvStdout(env, solution);
+
+        delete pathSolver;
+        delete exploredPositions;
+        delete solution;
+    }
+    else
+    {
+        cout << "Please enter a valid filepath." << endl;
+    }
 }
 
 void printEnv(Env env)
@@ -77,38 +85,28 @@ void size(char *str)
     }
 }
 
-void tests()
-{
-}
-
 void readEnvStdin(Env env)
 {
-    cout << "1" << endl;
-    std::string input;
-    while (!std::cin.eof())
+
+    //reads directly from filename entered in command line
+    for (int i = 0; !cin.eof() && i < ENV_DIM; i++)
     {
-        std::cin >> input;
-        cout << input << endl;
+        cin >> env[i];
     }
-    // std::cin >> input;
-    cout << "2" << endl;
 
-    //TODO
-    //reading from file
-    //TODO remove hardcoded input source
-    // std::fstream input;
-    // input.open("sampleTest/sample09.env");
-
-    // // cout << static_cast<char>(input.get()) << endl;
-
-    // for (int i = 0; i < ENV_DIM; i++) // && static_cast<char>(input.peek()) != '\0'
-    // {
-    //     for (int j = 0; j <= ENV_DIM; j++) // && static_cast<char>(input.peek()) != '\n'
-    //     {
-    //         env[i][j] = static_cast<char>(input.get());
-    //     }
-    // }
-    // input.close();
+    //if filename is not entered in from command line, this takes it as input from the user, and reads it into env.
+    if (env[ENV_DIM-1][ENV_DIM-1] != '=')
+    {
+        std::ifstream file;
+        file.open(env[0]);
+        if (file.is_open())
+        {
+            for (int i = 0; i < ENV_DIM; i++)
+            {
+                file >> env[i];
+            }
+        }
+    }
 }
 
 void printEnvStdout(Env env, NodeList *solution)

@@ -16,14 +16,14 @@ NodeList::~NodeList()
 
 NodeList::NodeList(NodeList &other)
 { //Completed
-        this->length = other.length;
+    this->length = other.length;
 
-        for (int i = 0; i < length; i++)
-        {
-            Node *old = other.nodes[i];
+    for (int i = 0; i < length; i++)
+    {
+        Node *old = other.nodes[i];
 
-            nodes[i] = new Node(old->getRow(), old->getCol(), old->getDistanceTraveled());
-        }
+        nodes[i] = new Node(old->getRow(), old->getCol(), old->getDistanceTraveled());
+    }
 }
 
 int NodeList::getLength()
@@ -55,7 +55,7 @@ Node *NodeList::getNode(int i)
 bool NodeList::doesContain(Node *node)
 {
     bool isInList = false;
-    for (int i = 0; i < length; i++)
+    for (int i = 0; node != nullptr && i < length; i++)
     {
         if (node->getRow() == nodes[i]->getRow() &&
             node->getCol() == nodes[i]->getCol())
@@ -65,6 +65,19 @@ bool NodeList::doesContain(Node *node)
     }
     return isInList;
 }
+// bool NodeList::doesContain(int row, int col)
+// {
+//     bool isInList = false;
+//     for (int i = 0; i < length; i++)
+//     {
+//         if (row == nodes[i]->getRow() &&
+//             col == nodes[i]->getCol())
+//         {
+//             isInList = true;
+//         }
+//     }
+//     return isInList;
+// }
 
 std::string NodeList::toString()
 {

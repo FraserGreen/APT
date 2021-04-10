@@ -24,23 +24,20 @@ void PathSolver::forwardSearch(Env env)
     // TODO
     // Input: E- the environment
     // Input: S- start location of the robot in the environment
-    Node *start = get(env, 'S');
+    Node *p = get(env, 'S');
     // Input: G- goal location for the robot to get reach
     Node *goal = get(env, 'G'); //TODO may need to change dist_travelled in this node
     // Let P be a list of positions the robot can reach, with distances (initially contains S). This is also called the open-list.
 
     NodeList *openList = new NodeList();
-    openList->addElement(start);
-    Node *p = start;
+    openList->addElement(p);
+    // Node *p = start;
 
     //LOOP:
-    int i = 1; //remove after testing
     while (env[p->getCol()][p->getRow()] != 'G' &&
            !equals(openList, nodesExplored))
     // for (int loopnum = 0; loopnum < 20; loopnum++)
     {
-        i++; //remove after testing
-
         // Let C be a list of positions the that has already being explored, with distances (initially empty). This is also called the closed-list.
         //*** this list is nodesExplored.
         // repeat:
@@ -50,7 +47,7 @@ void PathSolver::forwardSearch(Env env)
         for (int j = 0; j < openList->getLength() && nodesExplored->doesContain(p); j++)
         {
             p = openList->getNode(j);
-        } 
+        }
 
         //sets p to the node in openList which is closest to the goal, and not in closedList.
         for (int i = 0; i < openList->getLength(); i++)
@@ -78,9 +75,9 @@ void PathSolver::forwardSearch(Env env)
         // for Each position q in Env that the robot can reach from p do
         // Set the distance_travelled of q to be one more that that of p
         // Add q to open-list P only if it is not already in it.
- 
+
         //TODO remove openList from this method, do checks inside here
-         addNearbytoP(env, openList, p);
+        addNearbytoP(env, openList, p);
         // end
 
         // cout << openList->toString() << endl;
@@ -91,12 +88,13 @@ void PathSolver::forwardSearch(Env env)
         nodesExplored->addElement(new Node(p->getRow(), p->getCol(), p->getDistanceTraveled()));
 
         // visualiseEnv(env, openList, p);
-        cout << endl;
 
         //TODO get acccurate distance travelled after jumping backwards
     }
 
     // until The robot reaches the goal, that is, p == G, or no such position p can be found
+    delete openList;
+    delete goal;
 }
 
 Node *PathSolver::get(Env env, char charToFind)
@@ -115,30 +113,40 @@ Node *PathSolver::get(Env env, char charToFind)
     return node;
 }
 
-// NodeList *getAll(Env env, char charToFind)
-// {
-//     NodeList *nodeList = nullptr;
-//     for (int i = 1; i < ENV_DIM; i++)
-//     {
-//         for (int j = 1; j < ENV_DIM; j++)
-//         {
-//             if (env[i][j] == charToFind)
-//             {
-//                 nodeList->addElement(new Node(i, j, 0));
-//             }
-//         }
-//     }
-//     return nodeList;
-// }
-
 NodeList *PathSolver::getNodesExplored()
-{ //Deep copy of nodesExplored
+{ // Deep copy of nodesExplored
     return new NodeList(*nodesExplored);
 }
 
 NodeList *PathSolver::getPath(Env env)
 {
     // TODO
+    Node *goal = nodesExplored->getNode(nodesExplored->getLength() - 1);
+    NodeList *path = new NodeList;
+    // Hint: “Start from the goal node in the list nodesExplored.  This would be your final element of the path.
+    path->addElement(goal);
+    // Then search for the the four neighbours of the goal node in nodesExplored. If there is a neighbour that has distance_traveled one less than the goal node. Then that should be the node in the path before the goal node.
+    
+    while (!path->doesContain(get(env, 'S')))
+    {
+        Node *currentNode = path->getNode(path->getLength() - 1);
+
+        for (int j = 0; j < nodesExplored->getLength(); j++)
+        {
+            Node *candidate = nodesExplored->getNode(j);
+            // cout << "candidate " << j << ": " << candidate->toString() << endl;
+            if ((((abs(candidate->getCol() - currentNode->getCol()) == 1 && abs(candidate->getRow() - currentNode->getRow()) == 0)) || ((abs(candidate->getRow() - currentNode->getRow()) == 1 && abs(candidate->getCol() - currentNode->getCol()) == 0)))&& !path->doesContain(candidate))
+            {
+                path->addElement(candidate);
+                // cout << "candidate successful!" << endl;
+            }
+        }
+    }
+    // Repeat this backtracking process for each node you add to the path until you reach the start node.”
+    // Think carefully the path that you return must be from start to finish, not finish to start.
+    // Be aware that the returned path is a deep copy of the path, so you need to return a new NodeList object.
+
+    //TODO swap values in array (like in previous labwork), and return.
     return nullptr;
 }
 
@@ -148,34 +156,42 @@ void PathSolver::addNearbytoP(Env env, NodeList *openList, Node *p)
 {
     //up
     int row = p->getRow();
-    int col = p->getCol() - 1;
-    int dist_traveled = p->getDistanceTraveled();
+    int col = p->getCol() - 1;                        //-1 so it can start looking up straight away.
+    int dist_traveled = p->getDistanceTraveled() + 1; //+ 1 because moving will always only move by 1 space.
 
-    if (!openList->doesContain(new Node(row, col, dist_traveled)) && (env[col][row] == '.' || env[col][row] == 'G'))
-    {
-        openList->addElement(new Node(row, col, dist_traveled + 1));
-    }
-    //right
-    row++;
-    col++;
-    if (!openList->doesContain(new Node(row, col, dist_traveled)) && (env[col][row] == '.' || env[col][row] == 'G'))
-    {
-        openList->addElement(new Node(row, col, dist_traveled + 1));
-    }
-    //down
-    row--;
-    col++;
-    if (!openList->doesContain(new Node(row, col, dist_traveled)) && (env[col][row] == '.' || env[col][row] == 'G'))
-    {
-        openList->addElement(new Node(row, col, dist_traveled + 1));
-    }
+    int numDirections = 4; //up, right, down, left
+    int right = 0;
+    int down = 1; //these 3 are used to check against i in the loop later on
+    int left = 2;
 
-    //left
-    row--;
-    col--;
-    if (!openList->doesContain(new Node(row, col, dist_traveled)) && (env[col][row] == '.' || env[col][row] == 'G'))
+    //kind of ugly, but not sure how else to do it.
+    //firstly it looks to the node above the p, and checks if there it can go there (no wall). If so it adds it to openList (if it is not already there). then it does the same for right, down, and left.
+    for (int i = 0; i < numDirections; i++)
     {
-        openList->addElement(new Node(row, col, dist_traveled + 1));
+        Node *possibleAddition = new Node(row, col, dist_traveled);
+        if (!openList->doesContain(possibleAddition) && (env[col][row] == '.' || env[col][row] == 'G'))
+        {
+            openList->addElement(possibleAddition);
+        }
+        else
+        {
+            delete possibleAddition;
+        }
+        if (i == right)
+        {
+            row++;
+            col++;
+        }
+        else if (i == down)
+        {
+            row--;
+            col++;
+        }
+        else if (i == left)
+        {
+            row--;
+            col--;
+        }
     }
 }
 

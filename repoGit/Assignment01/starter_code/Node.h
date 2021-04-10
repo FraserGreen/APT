@@ -33,10 +33,11 @@ public:
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*    
                                            */
+    Node(Node &other);
+
     //TODO remove this after debugging
     //used in debugging to give info about a specific node.
     std::string toString();
-
 
 private:
     /*                                           */

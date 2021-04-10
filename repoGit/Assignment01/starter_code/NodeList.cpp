@@ -65,19 +65,20 @@ bool NodeList::doesContain(Node *node)
     }
     return isInList;
 }
-// bool NodeList::doesContain(int row, int col)
-// {
-//     bool isInList = false;
-//     for (int i = 0; i < length; i++)
-//     {
-//         if (row == nodes[i]->getRow() &&
-//             col == nodes[i]->getCol())
-//         {
-//             isInList = true;
-//         }
-//     }
-//     return isInList;
-// }
+
+bool NodeList::equals(NodeList *list2)
+{
+    bool equals = true;
+    for (int i = 0; i < length; i++)
+    {
+        if (!list2->doesContain(nodes[i]))
+        {
+            equals = false;
+        }
+    }
+
+    return equals;
+}
 
 std::string NodeList::toString()
 {

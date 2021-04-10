@@ -38,11 +38,13 @@ public:
     /*                                           */
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*                                           */
-    void addNearbytoP(Env env, NodeList *P, Node *p);
+    NodeList *getNearbyNodes(Node *node);
 
+    NodeList *getNearbyNodes(NodeList *nodeList, Node *node);
+
+//TODO delete this method
     void visualiseEnv(Env env, NodeList *P ,Node *p);
 
-    bool equals(NodeList *list1, NodeList *list2);
 
 private:
     /*                                           */

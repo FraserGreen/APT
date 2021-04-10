@@ -31,7 +31,9 @@ public:
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*                                           */
     bool doesContain(Node *node);
-    // bool NodeList::doesContain(int row, int col);
+
+    bool equals(NodeList* list2);
+
     std::string toString();
 
 

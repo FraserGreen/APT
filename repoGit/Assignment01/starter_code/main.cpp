@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 
         delete pathSolver;
         delete exploredPositions;
-        // delete solution;
+        delete solution;
     }
     else
     {
@@ -112,7 +112,7 @@ void readEnvStdin(Env env)
 //goes through all nodes in solution and
 void printEnvStdout(Env env, NodeList *solution)
 {
-    Env out{};
+    Env out{};    //create a copy of env that will be used to output solution
     for (int i = 0; i < ENV_DIM; i++)
     {
         for (int j = 0; j < ENV_DIM; j++)
@@ -120,9 +120,9 @@ void printEnvStdout(Env env, NodeList *solution)
             out[i][j] = env[i][j];
         }
     }
+
     //starts at i = 2 so that start is not modified
-    //ends at length -1 so that goal is not modified
-    for (int i = 2; i < solution->getLength() - 1; i++)
+    for (int i = 2; i < solution->getLength(); i++)
     {
         Node *prevNode = solution->getNode(i - 1);
         Node *node = solution->getNode(i);

@@ -66,7 +66,7 @@ bool NodeList::doesContain(Node *node)
     return isInList;
 }
 
-bool NodeList::equals(NodeList *list2)
+bool NodeList::isSupersetOf(NodeList *list2)
 {
     bool equals = true;
     for (int i = 0; i < length; i++)
@@ -78,15 +78,4 @@ bool NodeList::equals(NodeList *list2)
     }
 
     return equals;
-}
-
-std::string NodeList::toString()
-{
-    std::string str = "";
-    for (int i = 0; i < length; i++)
-    {
-        str.append(nodes[i]->toString());
-        str.append("\n");
-    }
-    return str;
 }

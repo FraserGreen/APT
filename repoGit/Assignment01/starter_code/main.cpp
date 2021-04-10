@@ -7,13 +7,6 @@
 #include "NodeList.h"
 #include "PathSolver.h"
 
-//TODO DELETE USINGS
-using std::cin;
-using std::cout;
-using std::endl;
-
-void tests();
-
 // Read an environment from standard input.
 void readEnvStdin(Env env);
 
@@ -33,11 +26,13 @@ int main(int argc, char **argv)
     // Load Environment
     Env env{};
     readEnvStdin(env);
-    if (env[ENV_DIM - 1][ENV_DIM - 1] == '=')
+    //check if environment has been read correctly
+    if (env[ENV_DIM - 1][ENV_DIM - 1] != '=')
     {
-
-        // printEnv(env);
-
+        std::cout << "Please enter a valid filepath." << std::endl;
+    }
+    else
+    {
         // Solve using forwardSearch
         // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 2
         PathSolver *pathSolver = new PathSolver();
@@ -45,7 +40,6 @@ int main(int argc, char **argv)
 
         NodeList *exploredPositions = nullptr;
         exploredPositions = pathSolver->getNodesExplored();
-        // cout << exploredPositions->toString() << endl;
 
         // Get the path
         // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 3
@@ -57,10 +51,6 @@ int main(int argc, char **argv)
         delete exploredPositions;
         delete solution;
     }
-    else
-    {
-        cout << "Please enter a valid filepath." << endl;
-    }
 }
 
 //goes through row by row, column by column, each element of env. at the end of each row, prints out a newline, unless it's the final column.
@@ -70,11 +60,11 @@ void printEnv(Env env)
     {
         for (int j = 0; j < ENV_DIM; j++)
         {
-            cout << env[i][j];
+            std::cout << env[i][j];
         }
-        if (i != ENV_DIM-1)
+        if (i != ENV_DIM - 1)
         {
-            cout << '\n';
+            std::cout << '\n';
         }
     }
 }
@@ -89,14 +79,12 @@ void size(char *str)
     }
 }
 
-
 void readEnvStdin(Env env)
 {
-
     //reads contents directly from filename entered in command line, and updates env accordingly, row by row
-    for (int i = 0; !cin.eof() && i < ENV_DIM; i++)
+    for (int i = 0; !std::cin.eof() && i < ENV_DIM; i++)
     {
-        cin >> env[i];
+        std::cin >> env[i];
     }
 
     //if filename is not entered in from command line, this takes it as input from the user, and reads it into env.

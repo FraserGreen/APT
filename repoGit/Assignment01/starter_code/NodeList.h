@@ -4,7 +4,8 @@
 #include "Types.h"
 #include "Node.h"
 
-class NodeList{
+class NodeList
+{
 public:
     /*                                           */
     /* DO NOT MOFIFY ANY CODE IN THIS SECTION    */
@@ -16,27 +17,26 @@ public:
 
     // Copy Constructor
     // Produces a DEEP COPY of the NodeList
-    NodeList(NodeList& other);
+    NodeList(NodeList &other);
 
     // Number of elements in the NodeList
     int getLength();
 
     // Add a COPY node element to the BACK of the nodelist.
-    void addElement(Node* newNode);
+    void addElement(Node *newNode);
 
     // Get a pointer to the ith node in the node list
-    Node* getNode(int i);
+    Node *getNode(int i);
 
     /*                                           */
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*                                           */
+
+    //returns true if node with matching row and column values is inside this NodeList
     bool doesContain(Node *node);
 
-    bool equals(NodeList* list2);
-
-    std::string toString();
-
-
+    // returns true if all nodes in list2 are included in this NodeList
+    bool isSupersetOf(NodeList *list2);
 
 private:
     /*                                           */
@@ -45,7 +45,7 @@ private:
 
     // NodeList: list of node objects
     // You may assume a fixed size for M1, M2, M3
-    Node* nodes[NODE_LIST_ARRAY_MAX_SIZE];
+    Node *nodes[NODE_LIST_ARRAY_MAX_SIZE];
 
     // Number of nodes currently in the NodeList
     int length;
@@ -54,8 +54,5 @@ private:
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*                                           */
 };
-
-
-
 
 #endif //COSC_ASSIGN_ONE_NODELIST

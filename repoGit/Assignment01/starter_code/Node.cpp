@@ -46,16 +46,3 @@ Node::Node(Node& other){
     col = other.getCol();
     dist_traveled = other.getDistanceTraveled();
 }
-
-//TODO delete
-std::string Node::toString()
-{
-    std::string str;
-    str.append("Row: ");
-    str.append(std::to_string(row));
-    str.append(", Column: ");
-    str.append(std::to_string(col));
-    str.append(", Distance Travelled: ");
-    str.append(std::to_string(dist_traveled));
-    return str;
-}

@@ -1,10 +1,6 @@
 #include "PathSolver.h"
 #include <iostream>
 
-//TODO DELETE USINGS
-using std::cout;
-using std::endl;
-
 PathSolver::PathSolver()
 {
     nodesExplored = new NodeList();
@@ -29,7 +25,7 @@ void PathSolver::forwardSearch(Env env)
 
     //LOOP:
     while (env[p->getCol()][p->getRow()] != 'G' &&
-           !openList->equals(nodesExplored))
+           !openList->isSupersetOf(nodesExplored))
     {
         // repeat:
         // Select the node p from the open-list P that has the smallest estimated distance (see Section 3.2.2) to goal and, is not in the closed-list C.
@@ -63,12 +59,6 @@ void PathSolver::forwardSearch(Env env)
 
             if (!openList->doesContain(candidate) && (env[candidate->getCol()][candidate->getRow()] == '.' || env[candidate->getCol()][candidate->getRow()] == 'G'))
             {
-                // openList->addElement(new Node(*candidate));
-                // cout << "candidate: " <<candidate->toString()<< ". mem: " << &candidate << endl;
-                // Node * copy = new Node(*candidate);
-                // cout << "cand copy: " <<copy->toString()<< ". mem: " << &copy << endl;
-                // openList->addElement(new Node(*candidate));
-
                 openList->addElement(new Node(*candidate));
             }
         }
@@ -119,7 +109,7 @@ NodeList *PathSolver::getPath(Env env)
 
     while (!backwardPath->doesContain(start))
     {
-        Node *currentNode = backwardPath->getNode(backwardPath->getLength()-1);
+        Node *currentNode = backwardPath->getNode(backwardPath->getLength() - 1);
 
         NodeList *nearbyNodes = getNearbyNodes(nodesExplored, currentNode);
         for (int i = 0; i < nearbyNodes->getLength(); i++)
@@ -137,35 +127,36 @@ NodeList *PathSolver::getPath(Env env)
     // Think carefully the path that you return must be from start to finish, not finish to start.
     // Be aware that the returned path is a deep copy of the path, so you need to return a new NodeList object.
 
-
     // reverse list
     NodeList *forwardPath = new NodeList();
     for (int i = backwardPath->getLength(); i > 0; i--)
     {
         Node *node = backwardPath->getNode(i - 1);
-        // cout << node->toString() << endl;
         forwardPath->addElement(new Node(*node));
     }
     delete backwardPath;
     return forwardPath;
-
 }
 
 //-----------------------------
 NodeList *PathSolver::getNearbyNodes(Node *node)
 {
+    int row = node->getRow();
+    int col = node->getCol();
+    int dist = node->getDistanceTraveled();
     NodeList *nearbyNodes = new NodeList();
+
     //up
-    nearbyNodes->addElement(new Node(node->getRow() - 1, node->getCol(), node->getDistanceTraveled() + 1));
+    nearbyNodes->addElement(new Node(row - 1, col, dist + 1));
 
     //right
-    nearbyNodes->addElement(new Node(node->getRow(), node->getCol() + 1, node->getDistanceTraveled() + 1));
+    nearbyNodes->addElement(new Node(row, col + 1, dist + 1));
 
     //down
-    nearbyNodes->addElement(new Node(node->getRow() + 1, node->getCol(), node->getDistanceTraveled() + 1));
+    nearbyNodes->addElement(new Node(row + 1, col, dist + 1));
 
     //left
-    nearbyNodes->addElement(new Node(node->getRow(), node->getCol() - 1, node->getDistanceTraveled() + 1));
+    nearbyNodes->addElement(new Node(row, col - 1, dist + 1));
 
     return nearbyNodes;
 }
@@ -177,53 +168,16 @@ NodeList *PathSolver::getNearbyNodes(NodeList *nodeList, Node *node)
     {
         Node *candidate = nodesExplored->getNode(i);
 
-            //if there is a difference of 1 in row and 0 in col, or vice versa, then the candidate node must be adjacent
-            
-        if ((((abs(candidate->getCol() - node->getCol()) == 1 
-        && abs(candidate->getRow() - node->getRow()) == 0)) 
-        || ((abs(candidate->getRow() - node->getRow()) == 1 
-        && abs(candidate->getCol() - node->getCol()) == 0))))
+        //if there is a difference of 1 in row and 0 in col, or vice versa, then the candidate node must be adjacent
+
+        if ((((abs(candidate->getCol() - node->getCol()) == 1 &&
+         abs(candidate->getRow() - node->getRow()) == 0)) ||
+         
+          ((abs(candidate->getRow() - node->getRow()) == 1 &&
+           abs(candidate->getCol() - node->getCol()) == 0))))
         {
             nearbyNodes->addElement(new Node(*candidate));
         }
     }
     return nearbyNodes;
-}
-
-//helper function to visualise how forwardSearch progresses
-void PathSolver::visualiseEnv(Env env, NodeList *P, Node *p)
-{
-    //change all P to ?'s
-    for (int i = 0; i < P->getLength(); i++)
-    {
-        if (env[P->getNode(i)->getCol()][P->getNode(i)->getRow()] != 'G')
-        {
-            env[P->getNode(i)->getCol()][P->getNode(i)->getRow()] = '?';
-        }
-    }
-
-    //change all C to x's
-    for (int i = 0; i < nodesExplored->getLength(); i++)
-    {
-        if (env[nodesExplored->getNode(i)->getCol()][nodesExplored->getNode(i)->getRow()] != 'G')
-        {
-            env[nodesExplored->getNode(i)->getCol()][nodesExplored->getNode(i)->getRow()] = 'x';
-        }
-    }
-
-    //change p to #
-    if (env[p->getCol()][p->getRow()] != 'G')
-    {
-        env[p->getCol()][p->getRow()] = '#';
-    }
-
-    //print
-    for (int i = 0; i < ENV_DIM; i++)
-    {
-        for (int j = 0; j < ENV_DIM; j++)
-        {
-            cout << env[i][j];
-        }
-        cout << endl;
-    }
 }

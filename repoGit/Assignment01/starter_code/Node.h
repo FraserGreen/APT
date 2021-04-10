@@ -2,8 +2,6 @@
 #define COSC_ASSIGN_ONE_NODE
 
 #include "Types.h"
-//TODO delete include string
-#include <string>
 
 class Node
 {
@@ -31,13 +29,10 @@ public:
 
     /*                                           */
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
-    /*    
-                                           */
-    Node(Node &other);
+    /*                                           */
 
-    //TODO remove this after debugging
-    //used in debugging to give info about a specific node.
-    std::string toString();
+    //copy constructor
+    Node(Node &other);
 
 private:
     /*                                           */

@@ -38,13 +38,11 @@ public:
     /*                                           */
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*                                           */
+    //creates and returns all nearby nodes
     NodeList *getNearbyNodes(Node *node);
 
+    //returns nearby nodes from input list
     NodeList *getNearbyNodes(NodeList *nodeList, Node *node);
-
-//TODO delete this method
-    void visualiseEnv(Env env, NodeList *P ,Node *p);
-
 
 private:
     /*                                           */

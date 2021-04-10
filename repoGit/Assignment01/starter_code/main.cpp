@@ -109,9 +109,19 @@ void readEnvStdin(Env env)
     }
 }
 
+//goes through all nodes in solution and
 void printEnvStdout(Env env, NodeList *solution)
 {
-    //starts at i=2 so that start is not included
+    Env out{};
+    for (int i = 0; i < ENV_DIM; i++)
+    {
+        for (int j = 0; j < ENV_DIM; j++)
+        {
+            out[i][j] = env[i][j];
+        }
+    }
+    //starts at i = 2 so that start is not modified
+    //ends at length -1 so that goal is not modified
     for (int i = 2; i < solution->getLength() - 1; i++)
     {
         Node *prevNode = solution->getNode(i - 1);
@@ -119,23 +129,23 @@ void printEnvStdout(Env env, NodeList *solution)
         //up
         if (node->getCol() < prevNode->getCol())
         {
-            env[prevNode->getCol()][prevNode->getRow()] = '^';
+            out[prevNode->getCol()][prevNode->getRow()] = '^';
         }
         //down
         else if (node->getCol() > prevNode->getCol())
         {
-            env[prevNode->getCol()][prevNode->getRow()] = 'v';
+            out[prevNode->getCol()][prevNode->getRow()] = 'v';
         }
         //left
         else if (node->getRow() < prevNode->getRow())
         {
-            env[prevNode->getCol()][prevNode->getRow()] = '<';
+            out[prevNode->getCol()][prevNode->getRow()] = '<';
         }
         //right
         else if (node->getRow() > prevNode->getRow())
         {
-            env[prevNode->getCol()][prevNode->getRow()] = '>';
+            out[prevNode->getCol()][prevNode->getRow()] = '>';
         }
     }
-    printEnv(env);
+    printEnv(out);
 }

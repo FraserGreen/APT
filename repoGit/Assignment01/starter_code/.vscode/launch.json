@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}/project",
-            "args": ["<", "${fileDirname}/sampleTest/sample08.env"],
+            "args": ["<", "${fileDirname}/sampleTest/4chooseFastestPath.env"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

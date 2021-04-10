@@ -14,17 +14,13 @@ public:
 
     // Constructor/Destructor
     PathSolver();
+    
     ~PathSolver();
 
     // Execute forward search algorithm
     // To be implemented for Milestone 2
     void forwardSearch(Env env);
 
-    //returns the node of final ocurrance of charToFind
-    Node *get(Env env, char charToFind);
-
-    //returns all nodes matching charToFind
-    NodeList *getAll(Env env, char charToFind);
 
     // Get a DEEP COPY of the explored NodeList in forward search
     // To be implemented for Milestone 2
@@ -38,6 +34,9 @@ public:
     /*                                           */
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*                                           */
+
+    //returns the node of final ocurrance of charToFind
+    Node *get(Env env, char charToFind);
 
     //creates and returns all nearby nodes
     NodeList *getNearbyNodes(Node *node);

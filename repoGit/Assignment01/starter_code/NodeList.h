@@ -13,6 +13,7 @@ public:
 
     // Constructor/Desctructor
     NodeList();
+    
     ~NodeList();
 
     // Copy Constructor

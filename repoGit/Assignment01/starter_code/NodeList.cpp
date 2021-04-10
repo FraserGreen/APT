@@ -50,7 +50,6 @@ Node *NodeList::getNode(int i)
     return node;
 }
 
-
 bool NodeList::doesContain(Node *node)
 {
     bool isInList = false;

@@ -12,6 +12,7 @@ public:
 
     // Constructor/Desctructor
     Node(int row, int col, int dist_traveled);
+    
     ~Node();
 
     // get row-coodinate of the node
@@ -40,7 +41,9 @@ private:
     /*                                           */
 
     int row;
+
     int col;
+
     int dist_traveled; // distance from start node
 
     /*                                           */

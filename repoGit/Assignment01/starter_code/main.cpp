@@ -28,7 +28,6 @@ Describe (briefly) any issues you encountered
     -unsure whether to convert some chunks of code into separate methods or not
 */
 
-
 // Read an environment from standard input.
 void readEnvStdin(Env env);
 
@@ -51,30 +50,43 @@ int main(int argc, char **argv)
     //check if environment has been read correctly
     if (env[ENV_DIM - 1][ENV_DIM - 1] != '=')
     {
-        std::cout << "Please enter a valid filepath." << std::endl;
+        std::cout << "Please enter a valid filepath / environment.";
     }
     else
     {
-        // Solve using forwardSearch
-        // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 2
         PathSolver *pathSolver = new PathSolver();
-        pathSolver->forwardSearch(env);
 
-        NodeList *exploredPositions = nullptr;
-        exploredPositions = pathSolver->getNodesExplored();
+        //check if env has a starting and ending position
+        Node *start = pathSolver->get(env, 'S');
+        Node *goal = pathSolver->get(env, 'G');
+        if (start == nullptr || goal == nullptr)
+        {
+            std::cout << "This environment has no starting / ending position!";
+        }
+        else
+        {
+            // Solve using forwardSearch
+            // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 2
+            pathSolver->forwardSearch(env);
 
-        // Get the path
-        // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 3
-        NodeList *solution = pathSolver->getPath(env);
+            NodeList *exploredPositions = nullptr;
+            exploredPositions = pathSolver->getNodesExplored();
 
-        printEnvStdout(env, solution);
+            // Get the path
+            // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 3
+            NodeList *solution = pathSolver->getPath(env);
 
-        delete pathSolver;
-        delete exploredPositions;
-        delete solution;
+            printEnvStdout(env, solution);
+
+            delete pathSolver;
+            delete exploredPositions;
+            delete solution;
+        }
+        
+        delete start;
+        delete goal;
     }
 }
-
 
 void printEnv(Env env)
 {
@@ -122,7 +134,6 @@ void readEnvStdin(Env env)
             }
         }
     }
-
 }
 
 void printEnvStdout(Env env, NodeList *solution)
@@ -160,10 +171,10 @@ void printEnvStdout(Env env, NodeList *solution)
         //right
         else if (node->getRow() > prevNode->getRow())
         {
-           direction = '>';
+            direction = '>';
         }
         out[prevNode->getCol()][prevNode->getRow()] = direction;
-
     }
+
     printEnv(out);
 }

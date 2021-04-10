@@ -133,7 +133,7 @@ NodeList *PathSolver::getPath(Env env)
     }
     
     delete backwardPath;
-    
+
     return forwardPath;
 }
 
@@ -179,5 +179,6 @@ NodeList *PathSolver::getNearbyNodes(NodeList *nodeList, Node *node)
             nearbyNodes->addElement(new Node(*candidate));
         }
     }
+    
     return nearbyNodes;
 }

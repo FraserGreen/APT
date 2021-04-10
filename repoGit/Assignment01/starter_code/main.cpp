@@ -29,7 +29,6 @@ void printEnv(Env env);
 
 int main(int argc, char **argv)
 {
-    //TODO cleanse cmd line input
 
     // Load Environment
     Env env{};
@@ -64,6 +63,7 @@ int main(int argc, char **argv)
     }
 }
 
+//goes through row by row, column by column, each element of env. at the end of each row, prints out a newline, unless it's the final column.
 void printEnv(Env env)
 {
     for (int i = 0; i < ENV_DIM; i++)
@@ -72,10 +72,14 @@ void printEnv(Env env)
         {
             cout << env[i][j];
         }
-        cout << endl;
+        if (i != ENV_DIM-1)
+        {
+            cout << '\n';
+        }
     }
 }
 
+//returns length of char array
 void size(char *str)
 {
     int length = 0;
@@ -85,10 +89,11 @@ void size(char *str)
     }
 }
 
+
 void readEnvStdin(Env env)
 {
 
-    //reads directly from filename entered in command line
+    //reads contents directly from filename entered in command line, and updates env accordingly, row by row
     for (int i = 0; !cin.eof() && i < ENV_DIM; i++)
     {
         cin >> env[i];
@@ -112,7 +117,7 @@ void readEnvStdin(Env env)
 //goes through all nodes in solution and
 void printEnvStdout(Env env, NodeList *solution)
 {
-    Env out{};    //create a copy of env that will be used to output solution
+    Env out{}; //create a copy of env that will be used to output solution
     for (int i = 0; i < ENV_DIM; i++)
     {
         for (int j = 0; j < ENV_DIM; j++)

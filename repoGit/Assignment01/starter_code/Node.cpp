@@ -10,32 +10,32 @@ Node::Node(int row, int col, int dist_traveled)
 
 Node::~Node()
 {
-    // TODO
+    //intentionally left blank
 }
 
 int Node::getRow()
-{ //completed
+{ 
     return row;
 }
 
 int Node::getCol()
-{ //completed
+{ 
     return col;
 }
 
 int Node::getDistanceTraveled()
-{ //completed
+{ 
     return dist_traveled;
 }
 
 void Node::setDistanceTraveled(int dist_traveled)
-{ //completed
+{ 
     this->dist_traveled = dist_traveled;
 }
 
 int Node::getEstimatedDist2Goal(Node *goal)
-{ //completed
-    // returns manhattan distance between current node and goal node
+{ 
+    // returns distance traveled + manhattan distance between current node and goal node
     return dist_traveled + (abs(col - goal->col) + abs(row - goal->row));
 }
 
@@ -47,6 +47,7 @@ Node::Node(Node& other){
     dist_traveled = other.getDistanceTraveled();
 }
 
+//TODO delete
 std::string Node::toString()
 {
     std::string str;

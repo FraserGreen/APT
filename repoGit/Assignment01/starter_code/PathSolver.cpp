@@ -78,11 +78,10 @@ void PathSolver::forwardSearch(Env env)
         // Add p to closed-list C.
 
         nodesExplored->addElement(new Node(*p));
-        //************************************************************************************************************************************************************************************************************************************************************************************************
-        // visualiseEnv(env, openList, p);
     }
 
     // until The robot reaches the goal, that is, p == G, or no such position p can be found
+
     delete openList;
     delete goal;
 }
@@ -144,7 +143,7 @@ NodeList *PathSolver::getPath(Env env)
     for (int i = backwardPath->getLength(); i > 0; i--)
     {
         Node *node = backwardPath->getNode(i - 1);
-        cout << node->toString() << endl;
+        // cout << node->toString() << endl;
         forwardPath->addElement(new Node(*node));
     }
     delete backwardPath;

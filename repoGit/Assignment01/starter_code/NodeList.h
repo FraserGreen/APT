@@ -32,11 +32,11 @@ public:
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*                                           */
 
-    //returns true if node with matching row and column values is inside this NodeList
+    //returns true if given node's row and column are the same as at least one node in this NodeList
     bool doesContain(Node *node);
 
     // returns true if all nodes in list2 are included in this NodeList
-    bool isSupersetOf(NodeList *list2);
+    bool isSupersetOf(NodeList *smallerList);
 
 private:
     /*                                           */

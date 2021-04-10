@@ -38,6 +38,7 @@ public:
     /*                                           */
     /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
     /*                                           */
+
     //creates and returns all nearby nodes
     NodeList *getNearbyNodes(Node *node);
 
@@ -46,7 +47,7 @@ public:
 
 private:
     /*                                           */
-    /* DO NOT MOFIFY THESE VARIABLES             */
+    /* DO NOT MODIFY THESE VARIABLES             */
     /*                                           */
 
     // Nodes explored in forward search algorithm

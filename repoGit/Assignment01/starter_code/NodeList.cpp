@@ -15,7 +15,7 @@ NodeList::~NodeList()
 }
 
 NodeList::NodeList(NodeList &other)
-{ //Completed
+{ 
     this->length = other.length;
 
     for (int i = 0; i < length; i++)
@@ -27,13 +27,12 @@ NodeList::NodeList(NodeList &other)
 }
 
 int NodeList::getLength()
-{ //Completed
+{ 
     return length;
 }
 
 void NodeList::addElement(Node *newPos)
 {
-    // completed
     if (newPos != nullptr && length < NODE_LIST_ARRAY_MAX_SIZE)
     {
         nodes[length] = newPos;
@@ -42,7 +41,7 @@ void NodeList::addElement(Node *newPos)
 }
 
 Node *NodeList::getNode(int i)
-{ //completed
+{ 
     Node *node = nullptr;
     if (nodes != nullptr && nodes[i] != nullptr)
     {
@@ -51,7 +50,7 @@ Node *NodeList::getNode(int i)
     return node;
 }
 
-//returns true if row and column are the same.
+
 bool NodeList::doesContain(Node *node)
 {
     bool isInList = false;
@@ -66,12 +65,12 @@ bool NodeList::doesContain(Node *node)
     return isInList;
 }
 
-bool NodeList::isSupersetOf(NodeList *list2)
+bool NodeList::isSupersetOf(NodeList *smallerList)
 {
     bool equals = true;
     for (int i = 0; i < length; i++)
     {
-        if (!list2->doesContain(nodes[i]))
+        if (!smallerList->doesContain(nodes[i]))
         {
             equals = false;
         }

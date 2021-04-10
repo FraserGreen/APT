@@ -23,20 +23,17 @@ void PathSolver::forwardSearch(Env env)
     NodeList *openList = new NodeList();
     openList->addElement(p);
 
-    //LOOP:
+    // do until the robot reaches the goal, that is, p == G, or no such position p can be found
     while (env[p->getCol()][p->getRow()] != 'G' &&
            !openList->isSupersetOf(nodesExplored))
     {
-        // repeat:
-        // Select the node p from the open-list P that has the smallest estimated distance (see Section 3.2.2) to goal and, is not in the closed-list C.
-
-        //sets p to the node closest to the end of openList that is not in closedList. Used mainly to get rid of the old p.
-        for (int j = 0; j < openList->getLength() && nodesExplored->doesContain(p); j++)
+        //sets p to the node closest to the end of openList that is not in closedList. Used mainly to get rid of the old p node, and replace it with a valid node (but not optimal.. yet)
+        for (int i = 0; i < openList->getLength() && nodesExplored->doesContain(p); i++)
         {
-            p = openList->getNode(j);
+            p = openList->getNode(i);
         }
 
-        //sets p to the node in openList which is closest to the goal, and not in closedList.
+        //sets p to the node in openList that has the smallest estimated distance  to the goal, and is not in closedList.
         for (int i = 0; i < openList->getLength(); i++)
         {
             Node *candidateNode = openList->getNode(i);
@@ -47,12 +44,13 @@ void PathSolver::forwardSearch(Env env)
                 p = candidateNode;
             }
         }
-        // for Each position q in Env that the robot can reach from p do
-        // Set the distance_travelled of q to be one more that that of p
-        // Add q to open-list P only if it is not already in it.
 
+        // for Each position q in Env that the robot can reach from p do
+
+        // Set the distance_travelled of q to be one more that that of p
         NodeList *nearbyNodes = getNearbyNodes(p);
 
+        // Add q to open-list P only if it is not already in it.
         for (int i = 0; i < nearbyNodes->getLength(); i++)
         {
             Node *candidate = nearbyNodes->getNode(i);
@@ -63,14 +61,11 @@ void PathSolver::forwardSearch(Env env)
             }
         }
         delete nearbyNodes;
-        // end
+        // end for
 
         // Add p to closed-list C.
-
         nodesExplored->addElement(new Node(*p));
     }
-
-    // until The robot reaches the goal, that is, p == G, or no such position p can be found
 
     delete openList;
     delete goal;
@@ -103,19 +98,22 @@ NodeList *PathSolver::getPath(Env env)
     Node *goal = nodesExplored->getNode(nodesExplored->getLength() - 1);
 
     NodeList *backwardPath = new NodeList;
+
     // Hint: “Start from the goal node in the list nodesExplored.  This would be your final element of the path.
     backwardPath->addElement(new Node(*goal));
-    // Then search for the the four neighbours of the goal node in nodesExplored. If there is a neighbour that has distance_traveled one less than the goal node. Then that should be the node in the path before the goal node.
 
+    // Repeat this backtracking process for each node you add to the path until you reach the start node.”
     while (!backwardPath->doesContain(start))
     {
         Node *currentNode = backwardPath->getNode(backwardPath->getLength() - 1);
-
+        // Search for the the four neighbours of the goal node in nodesExplored.
         NodeList *nearbyNodes = getNearbyNodes(nodesExplored, currentNode);
+
         for (int i = 0; i < nearbyNodes->getLength(); i++)
         {
             Node *candidate = nearbyNodes->getNode(i);
 
+            // If there is a neighbour that has distance_traveled one less than the current node. Then that should be the node in the path before the current node.
             if (!backwardPath->doesContain(candidate) && candidate->getDistanceTraveled() < currentNode->getDistanceTraveled())
             {
                 backwardPath->addElement(new Node(*candidate));
@@ -123,9 +121,8 @@ NodeList *PathSolver::getPath(Env env)
         }
         delete nearbyNodes;
     }
-    // Repeat this backtracking process for each node you add to the path until you reach the start node.”
+
     // Think carefully the path that you return must be from start to finish, not finish to start.
-    // Be aware that the returned path is a deep copy of the path, so you need to return a new NodeList object.
 
     // reverse list
     NodeList *forwardPath = new NodeList();
@@ -134,11 +131,14 @@ NodeList *PathSolver::getPath(Env env)
         Node *node = backwardPath->getNode(i - 1);
         forwardPath->addElement(new Node(*node));
     }
+    
     delete backwardPath;
+    
     return forwardPath;
 }
 
 //-----------------------------
+
 NodeList *PathSolver::getNearbyNodes(Node *node)
 {
     int row = node->getRow();
@@ -168,13 +168,13 @@ NodeList *PathSolver::getNearbyNodes(NodeList *nodeList, Node *node)
     {
         Node *candidate = nodesExplored->getNode(i);
 
-        //if there is a difference of 1 in row and 0 in col, or vice versa, then the candidate node must be adjacent
+        //if there is a difference of 1 in row and 0 in col, or vice versa, then the candidate node must be adjacent, and is added to nearbyNodes
 
         if ((((abs(candidate->getCol() - node->getCol()) == 1 &&
-         abs(candidate->getRow() - node->getRow()) == 0)) ||
-         
-          ((abs(candidate->getRow() - node->getRow()) == 1 &&
-           abs(candidate->getCol() - node->getCol()) == 0))))
+               abs(candidate->getRow() - node->getRow()) == 0)) ||
+
+             ((abs(candidate->getRow() - node->getRow()) == 1 &&
+               abs(candidate->getCol() - node->getCol()) == 0))))
         {
             nearbyNodes->addElement(new Node(*candidate));
         }

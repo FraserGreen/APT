@@ -1,11 +1,33 @@
 #include <iostream>
-#include <string>
 #include <fstream>
+#include <stdexcept>
+#include <string>
 
 #include "Types.h"
 #include "Node.h"
 #include "NodeList.h"
 #include "PathSolver.h"
+
+/*
+Describe (briefly) the approach you have taken in your implementation:
+    My implementation:
+    -reads environment from file that is passed through the command line or from standard input inside the program.
+    -generates a bruteforced list of nodes that eventually go from the start to the goal.
+    -refines this list into a solution by going backwards from goal to start and picking only the nodes that make correct progress
+    -creates a new environment (to preserve the input), and prints the solution on to that environment, including the direction that the robot would be taking.
+    -that new environment is then given as standard output
+
+
+Describe (briefly) any issues you encountered
+    -lots of segmentation faults
+    -lots of memory leaks (fixed with help from valgrind)
+    -lots of issues with row and column mismatching
+    -not knowing how to process standard input through the command line without use of **argv
+    -lots of unexpected nullptrs being passed around and handled badly
+    -trouble figuring out a good way to identify adjacent nodes without lots of code duplication
+    -unsure whether to convert some chunks of code into separate methods or not
+*/
+
 
 // Read an environment from standard input.
 void readEnvStdin(Env env);
@@ -17,7 +39,7 @@ void printEnvStdout(Env env, NodeList *solution);
 //get length of char array
 void size(char *str);
 
-//print env to terminal
+//goes through row by row, column by column, each element of env. at the end of each row, prints out a newline, unless it's the final column.
 void printEnv(Env env);
 
 int main(int argc, char **argv)
@@ -53,7 +75,7 @@ int main(int argc, char **argv)
     }
 }
 
-//goes through row by row, column by column, each element of env. at the end of each row, prints out a newline, unless it's the final column.
+
 void printEnv(Env env)
 {
     for (int i = 0; i < ENV_DIM; i++)
@@ -100,12 +122,12 @@ void readEnvStdin(Env env)
             }
         }
     }
+
 }
 
-//goes through all nodes in solution and
 void printEnvStdout(Env env, NodeList *solution)
 {
-    Env out{}; //create a copy of env that will be used to output solution
+    Env out{}; //create a deep copy of env that will be used to output solution, so that env is untouched
     for (int i = 0; i < ENV_DIM; i++)
     {
         for (int j = 0; j < ENV_DIM; j++)
@@ -113,32 +135,35 @@ void printEnvStdout(Env env, NodeList *solution)
             out[i][j] = env[i][j];
         }
     }
-
+    //imprints the solution onto env
     //starts at i = 2 so that start is not modified
     for (int i = 2; i < solution->getLength(); i++)
     {
         Node *prevNode = solution->getNode(i - 1);
         Node *node = solution->getNode(i);
+        char direction = '0';
         //up
         if (node->getCol() < prevNode->getCol())
         {
-            out[prevNode->getCol()][prevNode->getRow()] = '^';
+            direction = '^';
         }
         //down
         else if (node->getCol() > prevNode->getCol())
         {
-            out[prevNode->getCol()][prevNode->getRow()] = 'v';
+            direction = 'v';
         }
         //left
         else if (node->getRow() < prevNode->getRow())
         {
-            out[prevNode->getCol()][prevNode->getRow()] = '<';
+            direction = '<';
         }
         //right
         else if (node->getRow() > prevNode->getRow())
         {
-            out[prevNode->getCol()][prevNode->getRow()] = '>';
+           direction = '>';
         }
+        out[prevNode->getCol()][prevNode->getRow()] = direction;
+
     }
     printEnv(out);
 }

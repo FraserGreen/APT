@@ -146,6 +146,7 @@ void printEnvStdout(Env env, NodeList *solution)
             out[i][j] = env[i][j];
         }
     }
+    
     //imprints the solution onto env
     //starts at i = 2 so that start is not modified
     for (int i = 2; i < solution->getLength(); i++)

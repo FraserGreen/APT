@@ -1,1 +1,0 @@
-- Make sure ALL necessary nodes are deleted properly - no memory leaks!

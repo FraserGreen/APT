@@ -21,25 +21,19 @@ PathSolver::~PathSolver()
 void PathSolver::forwardSearch(Env env)
 {
 
-    // TODO
-    // Input: E- the environment
     // Input: S- start location of the robot in the environment
     Node *p = get(env, 'S');
     // Input: G- goal location for the robot to get reach
-    Node *goal = get(env, 'G'); //TODO may need to change dist_travelled in this node
-    // Let P be a list of positions the robot can reach, with distances (initially contains S). This is also called the open-list.
+    Node *goal = get(env, 'G'); 
 
+    // Let P be a list of positions the robot can reach, with distances (initially contains S). This is also called the open-list.
     NodeList *openList = new NodeList();
     openList->addElement(p);
-    // Node *p = start;
 
     //LOOP:
     while (env[p->getCol()][p->getRow()] != 'G' &&
            !equals(openList, nodesExplored))
-    // for (int loopnum = 0; loopnum < 20; loopnum++)
     {
-        // Let C be a list of positions the that has already being explored, with distances (initially empty). This is also called the closed-list.
-        //*** this list is nodesExplored.
         // repeat:
         // Select the node p from the open-list P that has the smallest estimated distance (see Section 3.2.2) to goal and, is not in the closed-list C.
 
@@ -54,22 +48,11 @@ void PathSolver::forwardSearch(Env env)
         {
             Node *candidateNode = openList->getNode(i);
 
-            if ((p->getEstimatedDist2Goal(goal) - p->getDistanceTraveled() >= (candidateNode->getEstimatedDist2Goal(goal) - candidateNode->getDistanceTraveled())) &&
+            if ((p->getEstimatedDist2Goal(goal) >= candidateNode->getEstimatedDist2Goal(goal)) &&
                 !nodesExplored->doesContain(candidateNode))
             {
-                // cout << "old p: " << p->toString();
-                // cout << ". Est. distance to goal: " << p->getEstimatedDist2Goal(goal) - p->getDistanceTraveled() << endl;
                 p = candidateNode;
-                // cout << "new p: " << p->toString();
-                // cout << ". Est. distance to goal: " << p->getEstimatedDist2Goal(goal) - p->getDistanceTraveled() << endl;
             }
-            // if (i + 1 == openList->getLength())
-            // {
-            //     for (int j = 0; j < openList->getLength() && nodesExplored->doesContain(p); j++)
-            //     {
-            //         p = openList->getNode(j);
-            //     }
-            // }
         }
 
         // for Each position q in Env that the robot can reach from p do
@@ -122,22 +105,22 @@ NodeList *PathSolver::getPath(Env env)
 {
     // TODO
     Node *goal = nodesExplored->getNode(nodesExplored->getLength() - 1);
-    NodeList *path = new NodeList;
+    NodeList *backwardPath = new NodeList;
     // Hint: “Start from the goal node in the list nodesExplored.  This would be your final element of the path.
-    path->addElement(goal);
+    backwardPath->addElement(goal);
     // Then search for the the four neighbours of the goal node in nodesExplored. If there is a neighbour that has distance_traveled one less than the goal node. Then that should be the node in the path before the goal node.
-    
-    while (!path->doesContain(get(env, 'S')))
+
+    while (!backwardPath->doesContain(get(env, 'S')))
     {
-        Node *currentNode = path->getNode(path->getLength() - 1);
+        Node *currentNode = backwardPath->getNode(backwardPath->getLength() - 1);
 
         for (int j = 0; j < nodesExplored->getLength(); j++)
         {
             Node *candidate = nodesExplored->getNode(j);
             // cout << "candidate " << j << ": " << candidate->toString() << endl;
-            if ((((abs(candidate->getCol() - currentNode->getCol()) == 1 && abs(candidate->getRow() - currentNode->getRow()) == 0)) || ((abs(candidate->getRow() - currentNode->getRow()) == 1 && abs(candidate->getCol() - currentNode->getCol()) == 0)))&& !path->doesContain(candidate))
+            if ((((abs(candidate->getCol() - currentNode->getCol()) == 1 && abs(candidate->getRow() - currentNode->getRow()) == 0)) || ((abs(candidate->getRow() - currentNode->getRow()) == 1 && abs(candidate->getCol() - currentNode->getCol()) == 0))) && !backwardPath->doesContain(candidate) && candidate->getDistanceTraveled() < currentNode->getDistanceTraveled())
             {
-                path->addElement(candidate);
+                backwardPath->addElement(candidate);
                 // cout << "candidate successful!" << endl;
             }
         }
@@ -147,7 +130,15 @@ NodeList *PathSolver::getPath(Env env)
     // Be aware that the returned path is a deep copy of the path, so you need to return a new NodeList object.
 
     //TODO swap values in array (like in previous labwork), and return.
-    return nullptr;
+
+    // swap
+    NodeList *forwardPath = new NodeList();
+    for (int i = backwardPath->getLength(); i >= 0; i--)
+    {
+        forwardPath->addElement(backwardPath->getNode(i - 1));
+    }
+    // delete backwardPath;
+    return forwardPath;
 }
 
 //-----------------------------

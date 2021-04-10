@@ -34,7 +34,7 @@ int main(int argc, char **argv)
     // Load Environment
     Env env{};
     readEnvStdin(env);
-    if (env[ENV_DIM-1][ENV_DIM-1] == '=')
+    if (env[ENV_DIM - 1][ENV_DIM - 1] == '=')
     {
 
         // printEnv(env);
@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 
         NodeList *exploredPositions = nullptr;
         exploredPositions = pathSolver->getNodesExplored();
-        cout << exploredPositions->toString() << endl;
+        // cout << exploredPositions->toString() << endl;
 
         // Get the path
         // THIS WILL ONLY WORK IF YOU'VE FINISHED MILESTONE 3
@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 
         delete pathSolver;
         delete exploredPositions;
-        delete solution;
+        // delete solution;
     }
     else
     {
@@ -95,7 +95,7 @@ void readEnvStdin(Env env)
     }
 
     //if filename is not entered in from command line, this takes it as input from the user, and reads it into env.
-    if (env[ENV_DIM-1][ENV_DIM-1] != '=')
+    if (env[ENV_DIM - 1][ENV_DIM - 1] != '=')
     {
         std::ifstream file;
         file.open(env[0]);
@@ -111,5 +111,31 @@ void readEnvStdin(Env env)
 
 void printEnvStdout(Env env, NodeList *solution)
 {
-    //TODO
+    //starts at i=2 so that start is not included
+    for (int i = 2; i < solution->getLength() - 1; i++)
+    {
+        Node *prevNode = solution->getNode(i - 1);
+        Node *node = solution->getNode(i);
+        //up
+        if (node->getCol() < prevNode->getCol())
+        {
+            env[prevNode->getCol()][prevNode->getRow()] = '^';
+        }
+        //down
+        else if (node->getCol() > prevNode->getCol())
+        {
+            env[prevNode->getCol()][prevNode->getRow()] = 'v';
+        }
+        //left
+        else if (node->getRow() < prevNode->getRow())
+        {
+            env[prevNode->getCol()][prevNode->getRow()] = '<';
+        }
+        //right
+        else if (node->getRow() > prevNode->getRow())
+        {
+            env[prevNode->getCol()][prevNode->getRow()] = '>';
+        }
+    }
+    printEnv(env);
 }

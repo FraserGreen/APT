@@ -4,10 +4,11 @@
 using std::cout;
 using std::endl;
 
-int stringLength(char* string);
-void copyString(char* src, char* dest);
+int stringLength(char *string);
+void copyString(char *src, char *dest);
 
-int main(void){
+int main(void)
+{
     char string[] = "hello";
     cout << string << endl;
     cout << "Length of string: " << stringLength(string) << endl;
@@ -16,7 +17,6 @@ int main(void){
     copyString(string, copiedString);
     cout << "Copied string: " << copiedString << endl;
 }
-
 
 // void copyString(char* src, char* dest){
 //     //assuming dest is large enough to store src every time
@@ -27,19 +27,27 @@ int main(void){
 //     }
 // }
 
-void copyString(char* src, char* dest){
+void copyString(char *src, char *dest)
+{
     //assuming dest is large enough to store src every time
-    int i=0;
-    while (src != nullptr && dest!= nullptr && src[i] != '\0'){
+    int i = 0;
+    while (src != nullptr && dest != nullptr && src[i] != '\0')
+    {
         dest[i] = src[i];
         ++i;
+        
+        if (src[i + 1] == '\0')
+        {
+            dest[i + 1] = '\0';
+        }
     }
 }
 
-
-int stringLength(char* string){
-    int i=0;
-    while (string[i] != '\0'){
+int stringLength(char *string)
+{
+    int i = 0;
+    while (string[i] != '\0')
+    {
         ++i;
     }
     return i;
